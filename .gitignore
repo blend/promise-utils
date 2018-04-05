@@ -1,0 +1,13 @@
+node_modules
+venv
+coverage
+logs
+dist/test
+resources
+*.log
+.nyc_output
+.idea
+*.pyc
+tscommand-*
+.tscache/
+dist/test
