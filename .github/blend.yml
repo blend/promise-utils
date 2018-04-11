@@ -1,3 +1,3 @@
 codeowners: '.github/CODEOWNERS'
 required_status_checks:
-  - promise-utils-test-unit
+  - unit-tests
