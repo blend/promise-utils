@@ -62,7 +62,8 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-ts');
   grunt.loadNpmTasks('grunt-tslint');
+  grunt.loadNpmTasks('grunt-force-task');
   grunt.loadNpmTasks('grunt-ava');
 
-  grunt.registerTask('default', ['ts', 'watch']);
+  grunt.registerTask('default', ['force:ts', 'watch']);
 };

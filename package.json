@@ -1,6 +1,6 @@
 {
   "name": "promise-utils",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Lodash-like utilities for dealing with promises",
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",
@@ -54,6 +54,7 @@
     "grunt": "1.0.2",
     "grunt-ava": "0.19.0",
     "grunt-contrib-watch": "1.0.0",
+    "grunt-force-task": "2.0.0",
     "grunt-ts": "6.0.0-beta.19",
     "grunt-tslint": "5.0.1",
     "nyc": "11.6.0",
