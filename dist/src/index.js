@@ -7,4 +7,5 @@ __export(require("./map"));
 __export(require("./delay"));
 __export(require("./timeout"));
 __export(require("./invert"));
+__export(require("./retry"));
 //# sourceMappingURL=index.js.map
