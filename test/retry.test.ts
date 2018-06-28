@@ -1,6 +1,11 @@
+import * as sinon from 'sinon';
+
 import { TestContext, default as test } from 'ava';
 
+import * as delay from '../src/delay';
 import * as promiseUtils from '../src/index';
+
+const sandbox = sinon.createSandbox();
 
 test('fails eventually', async (t: TestContext): Promise<void> => {
   await t.throws(
@@ -26,6 +31,28 @@ test('honors immediate failure scenarios', async (t: TestContext): Promise<void>
     )(),
     /Not a retryable error/,
   );
+});
+
+test.serial('delays appropriately', async (t: TestContext): Promise<void> => {
+  let count = 0;
+  const testFn = async () => {
+    if (count++ === 0) {
+      throw new Error('first fail');
+    } else {
+      return true;
+    }
+  };
+  const delayStub = sandbox.stub(delay, 'delay');
+
+  t.true(await promiseUtils.retry(
+    testFn,
+    {
+      maxAttempts: 3,
+      delayMs: 100,
+    },
+  )());
+  t.is(delayStub.callCount, 1);
+  t.is(delayStub.args[0][0], 100);
 });
 
 test('succeeds on retry', async (t: TestContext): Promise<void> => {

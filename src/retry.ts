@@ -1,8 +1,11 @@
 import * as _ from 'lodash';
 
+import { delay } from './delay';
+
 export interface RetryOpts {
   maxAttempts: number;
   isRetryable?: (err: Error) => boolean;
+  delayMs?: number;
 }
 
 export function retry<T extends Function>(fn: T, retryOpts: RetryOpts): T {
@@ -17,6 +20,9 @@ export function retry<T extends Function>(fn: T, retryOpts: RetryOpts): T {
           throw err;
         }
         lastErr = err;
+      }
+      if (retryOpts.delayMs) {
+        await delay(retryOpts.delayMs);
       }
     }
     throw lastErr;
