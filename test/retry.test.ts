@@ -64,3 +64,18 @@ test('succeeds on retry', async (t: TestContext): Promise<void> => {
   };
   t.true(await promiseUtils.retry(testFn, { maxAttempts: 3 })());
 });
+
+test('currys multiple args properly', async (t: TestContext): Promise<void> => {
+  const expectedFirstArg: string = 'first';
+  const expectedSecondArg: string = 'second';
+
+  const testFn = async (firstArg: string, secondArg: string) => {
+    t.is(firstArg, expectedFirstArg);
+    t.is(secondArg, expectedSecondArg);
+  };
+
+  await promiseUtils.retry(testFn, { maxAttempts: 1 })(
+    expectedFirstArg,
+    expectedSecondArg,
+  );
+});

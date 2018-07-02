@@ -14,7 +14,7 @@ export function retry<T extends Function>(fn: T, retryOpts: RetryOpts): T {
     let lastErr: Error = new Error(`Could not complete function within ${retryOpts.maxAttempts}`);
     for (const __ of _.range(retryOpts.maxAttempts)) {
       try {
-        return await fn(args);
+        return await fn(...args);
       } catch (err) {
         if (retryOpts.isRetryable && !retryOpts.isRetryable(err)) {
           throw err;

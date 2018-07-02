@@ -8,7 +8,7 @@ function retry(fn, retryOpts) {
         let lastErr = new Error(`Could not complete function within ${retryOpts.maxAttempts}`);
         for (const __ of _.range(retryOpts.maxAttempts)) {
             try {
-                return await fn(args);
+                return await fn(...args);
             }
             catch (err) {
                 if (retryOpts.isRetryable && !retryOpts.isRetryable(err)) {
