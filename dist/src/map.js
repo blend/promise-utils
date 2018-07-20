@@ -37,4 +37,12 @@ async function mapSeries(input, iteratee) {
     return mapLimit(input, 1, iteratee);
 }
 exports.mapSeries = mapSeries;
+// tslint:disable-next-line:no-any (types are enforced by overload signatures, validated by tests)
+async function flatMap(input, iteratee) {
+    if (!input) {
+        return [];
+    }
+    return _.flatten(await map(input, iteratee));
+}
+exports.flatMap = flatMap;
 //# sourceMappingURL=map.js.map

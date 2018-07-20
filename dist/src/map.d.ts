@@ -10,3 +10,7 @@ export declare function mapSeries<T, V>(input: T[], iteratee: (value: T, index: 
 export declare function mapSeries<T, V>(input: T[], iteratee: (value: T) => Promise<V>): Promise<V[]>;
 export declare function mapSeries<T extends Object, V>(input: T, iteratee: (value: T[keyof T], key: string) => Promise<V>): Promise<V[]>;
 export declare function mapSeries<T extends Object, V>(input: T, iteratee: (value: T[keyof T]) => Promise<V>): Promise<V[]>;
+export declare function flatMap<T, V>(input: T[], iteratee: (value: T, index: number) => Promise<V | V[]>): Promise<V[]>;
+export declare function flatMap<T, V>(input: T[], iteratee: (value: T) => Promise<V | V[]>): Promise<V[]>;
+export declare function flatMap<T extends Object, V>(input: T, iteratee: (value: T[keyof T], key: string) => Promise<V | V[]>): Promise<V[]>;
+export declare function flatMap<T extends Object, V>(input: T, iteratee: (value: T[keyof T]) => Promise<V | V[]>): Promise<V[]>;

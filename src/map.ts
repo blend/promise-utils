@@ -74,3 +74,23 @@ export async function mapSeries<T extends Object, V>(
 export async function mapSeries(input: any, iteratee: any): Promise<any[]> {
   return mapLimit(input, 1, iteratee);
 }
+
+export async function flatMap<T, V>(
+  input: T[], iteratee: (value: T, index: number) => Promise<V | V[]>,
+): Promise<V[]>;
+export async function flatMap<T, V>(
+  input: T[], iteratee: (value: T) => Promise<V | V[]>,
+): Promise<V[]>;
+export async function flatMap<T extends Object, V>(
+  input: T, iteratee: (value: T[keyof T], key: string) => Promise<V | V[]>,
+): Promise<V[]>;
+export async function flatMap<T extends Object, V>(
+  input: T, iteratee: (value: T[keyof T]) => Promise<V | V[]>,
+): Promise<V[]>;
+// tslint:disable-next-line:no-any (types are enforced by overload signatures, validated by tests)
+export async function flatMap(input: any, iteratee: any): Promise<any[]> {
+  if (!input) {
+    return [];
+  }
+  return _.flatten(await map(input, iteratee));
+}

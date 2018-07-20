@@ -1,16 +1,16 @@
 {
   "name": "promise-utils",
-  "version": "1.6.0",
+  "version": "1.7.0",
   "description": "Lodash-like utilities for dealing with promises",
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",
   "scripts": {
     "lintSrc": "tslint --project tsconfig.json --config tslint.js 'src/**/*.ts'",
     "lintTest": "tslint --project tsconfig.json --config tslint.test.js 'test/**/*.ts'",
-    "lint": "yarn lintSrc && yarn lintTest",
-    "lintFix": "yarn lintSrc --fix && yarn lintTest --fix",
+    "lint": "npm run lintSrc && npm run lintTest",
+    "lintFix": "npm run lintSrc --fix && npm run lintTest --fix",
     "testCode": "nyc ava",
-    "test": "tsc && yarn testCode && yarn lint",
+    "test": "tsc && npm run testCode && npm run lint",
     "start": "grunt"
   },
   "repository": {
