@@ -1,6 +1,6 @@
 {
   "name": "promise-utils",
-  "version": "1.8.0",
+  "version": "1.9.0",
   "description": "Lodash-like utilities for dealing with promises",
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",
