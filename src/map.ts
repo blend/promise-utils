@@ -1,20 +1,5 @@
 import * as _ from 'lodash';
 
-function chunkObject<T extends Object>(input: T, limit: number): Partial<T>[] {
-  return _(input)
-    .toPairs()
-    .chunk(limit)
-    // (adding types breaks the compiler, but the inferred types work just fine)
-    // tslint:disable:typedef
-    .map(pairList => _.reduce(
-      pairList,
-      (acc, pair) => _.defaults(acc, { [pair[0]]: pair[1] }),
-      {} as Partial<T>,
-    ))
-    // tslint:enable:typedef
-    .value();
-}
-
 export async function map<T, V>(
   input: T[], iteratee: (value: T, index: number) => Promise<V>,
 ): Promise<V[]>;
@@ -47,17 +32,25 @@ export async function mapLimit<T extends Object, V>(
 ): Promise<V[]>;
 // tslint:disable-next-line:no-any (types are enforced by overload signatures, validated by tests)
 export async function mapLimit<V>(input: any, limit: number, iteratee: any): Promise<V[]> {
-  let output: V[] = [];
   if (!input) {
-    return output;
+    return [];
   }
 
-  const inputGroups: {}[] = input.map ? _.chunk(input, limit) : chunkObject(input, limit);
-
-  for (const inputGroup of inputGroups) {
-    output = _.concat(output, await map(inputGroup, iteratee) as V[]);
-  }
-  return output;
+  // tslint:disable-next-line:no-any
+  const stack: any[] = _.reverse(input.map ? _.clone(input) : _.toPairs(input));
+  return await flatMap(_.range(limit), async () => {
+    const partialOutput: V[] = [];
+    while (!_.isEmpty(stack)) {
+      // tslint:disable-next-line:no-any
+      const val: any = stack.pop();
+      if (input.map) {
+        partialOutput.push(await iteratee(val, stack.length));
+      } else {
+        partialOutput.push(await iteratee(...(_.reverse(val))));
+      }
+    }
+    return partialOutput;
+  });
 }
 
 export async function mapSeries<T, V>(

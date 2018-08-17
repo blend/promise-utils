@@ -1,16 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const _ = require("lodash");
-function chunkObject(input, limit) {
-    return _(input)
-        .toPairs()
-        .chunk(limit)
-        // (adding types breaks the compiler, but the inferred types work just fine)
-        // tslint:disable:typedef
-        .map(pairList => _.reduce(pairList, (acc, pair) => _.defaults(acc, { [pair[0]]: pair[1] }), {}))
-        // tslint:enable:typedef
-        .value();
-}
 // tslint:disable-next-line:no-any (types are enforced by overload signatures, validated by tests)
 async function map(input, iteratee) {
     if (!input) {
@@ -21,15 +11,25 @@ async function map(input, iteratee) {
 exports.map = map;
 // tslint:disable-next-line:no-any (types are enforced by overload signatures, validated by tests)
 async function mapLimit(input, limit, iteratee) {
-    let output = [];
     if (!input) {
-        return output;
+        return [];
     }
-    const inputGroups = input.map ? _.chunk(input, limit) : chunkObject(input, limit);
-    for (const inputGroup of inputGroups) {
-        output = _.concat(output, await map(inputGroup, iteratee));
-    }
-    return output;
+    // tslint:disable-next-line:no-any
+    const stack = _.reverse(input.map ? _.clone(input) : _.toPairs(input));
+    return await flatMap(_.range(limit), async () => {
+        const partialOutput = [];
+        while (!_.isEmpty(stack)) {
+            // tslint:disable-next-line:no-any
+            const val = stack.pop();
+            if (input.map) {
+                partialOutput.push(await iteratee(val, stack.length));
+            }
+            else {
+                partialOutput.push(await iteratee(...(_.reverse(val))));
+            }
+        }
+        return partialOutput;
+    });
 }
 exports.mapLimit = mapLimit;
 // tslint:disable-next-line:no-any (types are enforced by overload signatures, validated by tests)
