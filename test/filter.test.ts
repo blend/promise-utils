@@ -1,0 +1,42 @@
+import * as _ from 'lodash';
+
+import { TestContext, default as test } from 'ava';
+
+import * as promiseUtils from '../src/index';
+
+test('returns empty array when given no input', async (t: TestContext): Promise<void> => {
+  const output = await promiseUtils.filter(null as any, _.identity);
+  t.deepEqual(output, []);
+});
+
+test('filters arrays', async (t: TestContext): Promise<void> => {
+  const input = [1, 2];
+  const output = await promiseUtils.filter(input, async (value: any) => {
+    return value === 2;
+  });
+  t.deepEqual(output, [2]);
+});
+
+test('filters arrays with indices', async (t: TestContext): Promise<void> => {
+  const input = [1, 2];
+  const output = await promiseUtils.filter(input, async (value: any, i: number) => {
+    return i === 1;
+  });
+  t.deepEqual(output, [2]);
+});
+
+test('filters objects', async (t: TestContext): Promise<void> => {
+  const input = { a: 1, b: 2 };
+  const output = await promiseUtils.filter(input, async (value: any) => {
+    return value === 2;
+  });
+  t.deepEqual(output, [2]);
+});
+
+test('filters objects without keys', async (t: TestContext): Promise<void> => {
+  const input = { a: 1, b: 2 };
+  const output = await promiseUtils.filter(input, async (value: any, key: any) => {
+    return key === 'b';
+  });
+  t.deepEqual(output, [2]);
+});
