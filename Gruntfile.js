@@ -6,6 +6,7 @@ module.exports = function(grunt) {
   const ALL_TS_FILES = [...TS_SRC_FILES, ...TS_TEST_FILES];
   const COMPILED_SRC_FILES = ['dist/**/*.js'];
   const COMPILED_TEST_FILES = ['dist/test/**/*.test.js'];
+  const ALL_FILES = [...ALL_TS_FILES, 'Gruntfile.js', 'package-lock.json', 'tsconfig.json', 'tslint.*'];
 
   // Project configuration.
   grunt.initConfig({
@@ -13,6 +14,17 @@ module.exports = function(grunt) {
     ts: {
       default: {
         tsconfig: true
+      }
+    },
+
+    prettier: {
+      options: {
+        singleQuote: true,
+        trailingComma: 'all',
+        printWidth: 100,
+      },
+      files: {
+        src: ALL_TS_FILES,
       }
     },
 
@@ -50,8 +62,8 @@ module.exports = function(grunt) {
 
     watch: {
       compile: {
-        files: ALL_TS_FILES,
-        tasks: [ 'ts', 'ava', 'tslint:src', 'tslint:test'],
+        files: ALL_FILES,
+        tasks: [ 'test'],
         options: {
           spawn: false,
         },
@@ -62,8 +74,10 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-ts');
   grunt.loadNpmTasks('grunt-tslint');
+  grunt.loadNpmTasks('grunt-prettier');
   grunt.loadNpmTasks('grunt-force-task');
   grunt.loadNpmTasks('grunt-ava');
 
-  grunt.registerTask('default', ['force:ts', 'watch']);
+  grunt.registerTask('test', [ 'ts', 'ava', 'prettier', 'tslint:src', 'tslint:test']);
+  grunt.registerTask('default', ['force:test', 'watch']);
 };

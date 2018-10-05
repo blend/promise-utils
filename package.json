@@ -1,13 +1,14 @@
 {
   "name": "promise-utils",
-  "version": "1.10.0",
+  "version": "1.11.0",
   "description": "Lodash-like utilities for dealing with promises",
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",
   "scripts": {
+    "pretty": "prettier --list-different '{src,test}/**/**/*.ts'",
     "lintSrc": "tslint --project tsconfig.json --config tslint.js 'src/**/*.ts'",
     "lintTest": "tslint --project tsconfig.json --config tslint.test.js 'test/**/*.ts'",
-    "lint": "npm run lintSrc && npm run lintTest",
+    "lint": "yarn pretty && npm run lintSrc && npm run lintTest",
     "lintFix": "npm run lintSrc --fix && npm run lintTest --fix",
     "testCode": "nyc ava",
     "test": "tsc && npm run testCode && npm run lint",
@@ -16,6 +17,11 @@
   "repository": {
     "type": "git",
     "url": "git@git.blendlabs.com:blend/promise-utils.git"
+  },
+  "prettier": {
+    "singleQuote": true,
+    "trailingComma": "all",
+    "printWidth": 100
   },
   "ava": {
     "files": [
@@ -56,6 +62,7 @@
     "grunt-ava": "0.19.0",
     "grunt-contrib-watch": "1.1.0",
     "grunt-force-task": "2.0.0",
+    "grunt-prettier": "1.1.0",
     "grunt-ts": "6.0.0-beta.20",
     "grunt-tslint": "5.0.2",
     "nyc": "11.6.0",

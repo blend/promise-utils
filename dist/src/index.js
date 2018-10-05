@@ -9,4 +9,5 @@ __export(require("./invert"));
 __export(require("./map"));
 __export(require("./retry"));
 __export(require("./timeout"));
+__export(require("./memoize"));
 //# sourceMappingURL=index.js.map

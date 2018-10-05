@@ -16,7 +16,7 @@ test('runs with indices', async (t: TestContext): Promise<void> => {
 
 test('works for objects', async (t: TestContext): Promise<void> => {
   const input = { a: 1, b: 2, c: 3, d: 4 };
-  const output = await promiseUtils.map(input, async (a, b) => ([b, a]));
+  const output = await promiseUtils.map(input, async (a, b) => [b, a]);
   t.deepEqual(output, _.toPairs(input));
 });
 

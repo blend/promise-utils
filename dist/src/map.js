@@ -25,7 +25,7 @@ async function mapLimit(input, limit, iteratee) {
                 partialOutput.push(await iteratee(val, stack.length));
             }
             else {
-                partialOutput.push(await iteratee(...(_.reverse(val))));
+                partialOutput.push(await iteratee(..._.reverse(val)));
             }
         }
         return partialOutput;
