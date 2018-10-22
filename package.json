@@ -1,6 +1,6 @@
 {
   "name": "promise-utils",
-  "version": "1.11.0",
+  "version": "1.12.0",
   "description": "Lodash-like utilities for dealing with promises",
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",
@@ -11,7 +11,7 @@
     "lint": "yarn pretty && npm run lintSrc && npm run lintTest",
     "lintFix": "npm run lintSrc --fix && npm run lintTest --fix",
     "testCode": "nyc ava",
-    "test": "tsc && npm run testCode && npm run lint",
+    "test": "tsc && npm run testCode && npm run lint && ./bin/assert_no_file_modifications.sh",
     "start": "grunt"
   },
   "repository": {
