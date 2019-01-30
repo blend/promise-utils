@@ -83,6 +83,7 @@ module.exports = {
     'comment-format': [true, 'check-space'],
     'interface-over-type-literal': true,
     'jsdoc-format': true,
+    'completed-docs': [true, 'classes', 'functions', 'methods'],
     'new-parens': true,
     'no-angle-bracket-type-assertion': true,
     'no-consecutive-blank-lines': true,
