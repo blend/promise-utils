@@ -12,4 +12,4 @@
  *     results. It has all the arguments applied to it and must be synchronous.
  * @returns a memoized version of fn
  */
-export declare function memoize<FnType extends Function>(fn: FnType, hasher?: Function): FnType;
+export declare function memoize<FnType extends Function>(fn: FnType, hasher?: Function, timeoutMs?: number): FnType;

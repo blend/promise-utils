@@ -1,4 +1,5 @@
 import * as _ from 'lodash';
+import * as moment from 'moment';
 
 /**
  * Caches the results of an async function. When creating a hash to store function results against,
@@ -17,17 +18,27 @@ import * as _ from 'lodash';
 export function memoize<FnType extends Function>(
   fn: FnType,
   hasher: Function = _.identity,
+  timeoutMs?: number,
 ): FnType {
   // tslint:disable:no-any (unfortunately we can't give the FnType any more clarity or it limits
   // what you can do with it)
-  const memos: Map<any, any> = new Map();
+  const memos: Map<any, { value: any; timestamp: number }> = new Map();
   const queues: Map<any, Promise<any>> = new Map();
 
   return ((async (...args: any[]): Promise<any> => {
     const key: any = hasher(...args);
     if (memos.has(key)) {
-      return memos.get(key)!;
-    } else if (queues.has(key)) {
+      if (
+        !timeoutMs ||
+        moment(memos.get(key)!.timestamp)
+          .add(timeoutMs, 'milliseconds')
+          .isAfter(moment())
+      ) {
+        return memos.get(key)!.value;
+      }
+    }
+
+    if (queues.has(key)) {
       return await queues.get(key)!;
     }
 
@@ -36,7 +47,7 @@ export function memoize<FnType extends Function>(
 
     try {
       const ret: any = await queues.get(key)!;
-      memos.set(key, ret);
+      memos.set(key, { value: ret, timestamp: Date.now() });
       return ret;
     } finally {
       queues.delete(key);

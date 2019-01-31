@@ -6,7 +6,7 @@ module.exports = function(grunt) {
   const ALL_TS_FILES = [...TS_SRC_FILES, ...TS_TEST_FILES];
   const COMPILED_SRC_FILES = ['dist/**/*.js'];
   const COMPILED_TEST_FILES = ['dist/test/**/*.test.js'];
-  const ALL_FILES = [...ALL_TS_FILES, 'Gruntfile.js', 'package-lock.json', 'tsconfig.json', 'tslint.*'];
+  const ALL_FILES = [...ALL_TS_FILES, 'Gruntfile.js', 'package-lock.json', 'package.json', 'tsconfig.json', 'tslint.*'];
 
   // Project configuration.
   grunt.initConfig({

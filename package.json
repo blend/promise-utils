@@ -1,6 +1,6 @@
 {
   "name": "promise-utils",
-  "version": "1.13.0",
+  "version": "1.14.0",
   "description": "Lodash-like utilities for dealing with promises",
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",
@@ -71,6 +71,7 @@
     "typescript": "2.9.2"
   },
   "dependencies": {
-    "lodash": "4.17.10"
+    "lodash": "4.17.10",
+    "moment": "2.24.0"
   }
 }

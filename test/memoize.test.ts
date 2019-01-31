@@ -65,7 +65,9 @@ test('uses memos on subsequent calls (tested by coverage)', async (t: TestContex
   const fnToMemoize = sandbox
     .stub()
     .onFirstCall()
-    .returns('first');
+    .returns('first')
+    .onSecondCall()
+    .throws(new Error('this should not happen'));
   const memoized = promiseUtils.memoize(fnToMemoize, () => 1);
 
   const ret = await promiseUtils.map(_.range(100), val => memoized(val));
@@ -74,4 +76,42 @@ test('uses memos on subsequent calls (tested by coverage)', async (t: TestContex
   const ret2 = await promiseUtils.map(_.range(100), memoized);
   const cacheCount2 = _.filter(ret2, val => val === 'first').length;
   t.is(cacheCount2, 100);
+});
+
+test('uses memos on subsequent calls with timeout', async (t: TestContext): Promise<void> => {
+  const fnToMemoize = sandbox
+    .stub()
+    .onFirstCall()
+    .returns('first')
+    .onSecondCall()
+    .throws(new Error('this should not happen'));
+  const memoized = promiseUtils.memoize(fnToMemoize, () => 1, 1000);
+
+  const ret = await promiseUtils.map(_.range(100), val => memoized(val));
+  const cacheCount = _.filter(ret, val => val === 'first').length;
+  t.is(cacheCount, 100);
+  const ret2 = await promiseUtils.map(_.range(100), memoized);
+  const cacheCount2 = _.filter(ret2, val => val === 'first').length;
+  t.is(cacheCount2, 100);
+});
+
+test('invalidates cache after timeout', async function(t: TestContext): Promise<void> {
+  const fnToMemoize = sandbox
+    .stub()
+    .onFirstCall()
+    .returns('first')
+    .onSecondCall()
+    .throws(new Error('should throw here'));
+  const memoized = promiseUtils.memoize(fnToMemoize, () => 1, 100);
+  const clock = sinon.useFakeTimers();
+
+  const ret = await promiseUtils.map(_.range(100), memoized);
+  const cacheCount = _.filter(ret, val => val === 'first').length;
+  t.is(cacheCount, 100);
+
+  clock.tick(200);
+  const err = await promiseUtils.invert(memoized(1), 'Not correctly invalidating expect');
+  t.is(err.message, 'should throw here');
+
+  clock.restore();
 });
