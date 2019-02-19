@@ -1,10 +1,8 @@
-import { TestContext, default as test } from 'ava';
+import test from 'ava';
 
 import * as promiseUtils from '../src/index';
 
-test('resolves appropriate value when function finishes first', async (t: TestContext): Promise<
-  void
-> => {
+test('resolves appropriate value when function finishes first', async t => {
   const ret = await promiseUtils.timeout(
     () => true,
     1000,
@@ -13,7 +11,7 @@ test('resolves appropriate value when function finishes first', async (t: TestCo
   t.is(ret, true);
 });
 
-test('handles argument passing appropriately', async (t: TestContext): Promise<void> => {
+test('handles argument passing appropriately', async t => {
   const ret = await promiseUtils.timeout(
     async (a: string, b: string, c: string) => promiseUtils.immediate(b),
     1000,
@@ -22,14 +20,29 @@ test('handles argument passing appropriately', async (t: TestContext): Promise<v
   t.is(ret, 'really important');
 });
 
-test('throws errors when delays are too long', async (t: TestContext): Promise<void> => {
+test('throws errors when delays are too long', async t => {
   const ret = await promiseUtils.invert(
     promiseUtils.timeout(
       async () => promiseUtils.delay(50, undefined),
       0,
       'Test function completed too fast!',
     )(),
-    'Race should have failed!',
   );
   t.is(ret.message, 'Test function completed too fast!');
+});
+
+test('uses default error message', async t => {
+  const ret = await promiseUtils.invert(
+    promiseUtils.timeout(async () => promiseUtils.delay(50, undefined), 0)(),
+  );
+  t.is(ret.message, 'Could not resolve <anonymous> within 0 ms');
+});
+
+test('default error message uses function name', async t => {
+  const ret = await promiseUtils.invert(
+    promiseUtils.timeout(async function delay() {
+      await promiseUtils.delay(50, undefined);
+    }, 0)(),
+  );
+  t.is(ret.message, 'Could not resolve delay within 0 ms');
 });

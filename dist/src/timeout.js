@@ -11,6 +11,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
  *     function with the same parameters as you would fn.
  */
 function timeout(fn, expirationTime, errorMessage) {
+    errorMessage =
+        errorMessage || `Could not resolve ${fn.name || '<anonymous>'} within ${expirationTime} ms`;
     // tslint:disable-next-line:typedef no-any (typedef is hacked because we're hijacking fn)
     return async function race() {
         return Promise.race([

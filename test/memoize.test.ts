@@ -1,13 +1,13 @@
 import * as _ from 'lodash';
 import * as sinon from 'sinon';
 
-import { TestContext, default as test } from 'ava';
+import test from 'ava';
 
 import * as promiseUtils from '../src/index';
 
 const sandbox = sinon.createSandbox();
 
-test('stores values', async (t: TestContext): Promise<void> => {
+test('stores values', async t => {
   const fnToMemoize = sandbox
     .stub()
     .onFirstCall()
@@ -18,7 +18,7 @@ test('stores values', async (t: TestContext): Promise<void> => {
   _.each(ret, val => t.is(val, 'correct'));
 });
 
-test('honors hasher', async (t: TestContext): Promise<void> => {
+test('honors hasher', async t => {
   const fnToMemoize = sandbox
     .stub()
     .onFirstCall()
@@ -30,7 +30,7 @@ test('honors hasher', async (t: TestContext): Promise<void> => {
   t.is(cacheCount, 1);
 });
 
-test('typescript def works for multiple args', async (t: TestContext): Promise<void> => {
+test('typescript def works for multiple args', async t => {
   let count = 0;
   async function stuffToMemoize(a: string, b: number): Promise<boolean> {
     if (count === 0) {
@@ -47,7 +47,7 @@ test('typescript def works for multiple args', async (t: TestContext): Promise<v
   t.is(cacheCount, 1);
 });
 
-test('honors user provided hasher', async (t: TestContext): Promise<void> => {
+test('honors user provided hasher', async t => {
   const fnToMemoize = sandbox
     .stub()
     .onFirstCall()
@@ -59,9 +59,7 @@ test('honors user provided hasher', async (t: TestContext): Promise<void> => {
   t.is(cacheCount, 100);
 });
 
-test('uses memos on subsequent calls (tested by coverage)', async (t: TestContext): Promise<
-  void
-> => {
+test('uses memos on subsequent calls (tested by coverage)', async t => {
   const fnToMemoize = sandbox
     .stub()
     .onFirstCall()
@@ -78,7 +76,7 @@ test('uses memos on subsequent calls (tested by coverage)', async (t: TestContex
   t.is(cacheCount2, 100);
 });
 
-test('uses memos on subsequent calls with timeout', async (t: TestContext): Promise<void> => {
+test('uses memos on subsequent calls with timeout', async t => {
   const fnToMemoize = sandbox
     .stub()
     .onFirstCall()
@@ -95,7 +93,7 @@ test('uses memos on subsequent calls with timeout', async (t: TestContext): Prom
   t.is(cacheCount2, 100);
 });
 
-test('invalidates cache after timeout', async function(t: TestContext): Promise<void> {
+test('invalidates cache after timeout', async t => {
   const fnToMemoize = sandbox
     .stub()
     .onFirstCall()

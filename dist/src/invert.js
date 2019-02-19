@@ -11,6 +11,7 @@ const _ = require("lodash");
  */
 // tslint:disable-next-line:no-any (returns the rejection which is untyped)
 async function invert(promise, message) {
+    message = message || 'Expected promise to reject';
     return promise.then((res) => {
         throw new Error(message);
     }, _.identity);

@@ -8,4 +8,4 @@
  * @returns Returns a wrapped function that will throw an error if it takes too long. Invoke this
  *     function with the same parameters as you would fn.
  */
-export declare function timeout<T extends Function>(fn: T, expirationTime: number, errorMessage: string): T;
+export declare function timeout<T extends Function>(fn: T, expirationTime: number, errorMessage?: string): T;

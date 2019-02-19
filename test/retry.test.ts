@@ -1,25 +1,25 @@
 import * as sinon from 'sinon';
 
-import { TestContext, default as test } from 'ava';
+import test from 'ava';
 
 import * as delay from '../src/delay';
 import * as promiseUtils from '../src/index';
 
 const sandbox = sinon.createSandbox();
 
-test('fails eventually', async (t: TestContext): Promise<void> => {
-  await t.throws(
+test('fails eventually', async t => {
+  await t.throwsAsync(
     promiseUtils.retry(
       () => {
         throw new Error('testing failures');
       },
       { maxAttempts: 3 },
-    )(),
+    ),
     /testing failure/,
   );
 });
 
-test('honors immediate failure scenarios', async (t: TestContext): Promise<void> => {
+test('honors immediate failure scenarios', async t => {
   let count = 0;
   const testFn = async () => {
     if (count++ === 0) {
@@ -28,40 +28,37 @@ test('honors immediate failure scenarios', async (t: TestContext): Promise<void>
       return true;
     }
   };
-  await t.throws(
+  await t.throwsAsync(
     promiseUtils.retry(testFn, {
       maxAttempts: 3,
       isRetryable: err => err.message !== 'Not a retryable error',
-    })(),
+    }),
     /Not a retryable error/,
   );
 });
 
-test.serial(
-  'delays appropriately',
-  async (t: TestContext): Promise<void> => {
-    let count = 0;
-    const testFn = async () => {
-      if (count++ === 0) {
-        throw new Error('first fail');
-      } else {
-        return true;
-      }
-    };
-    const delayStub = sandbox.stub(delay, 'delay');
+test.serial('delays appropriately', async t => {
+  let count = 0;
+  const testFn = async () => {
+    if (count++ === 0) {
+      throw new Error('first fail');
+    } else {
+      return true;
+    }
+  };
+  const delayStub = sandbox.stub(delay, 'delay');
 
-    t.true(
-      await promiseUtils.retry(testFn, {
-        maxAttempts: 3,
-        delayMs: 100,
-      })(),
-    );
-    t.is(delayStub.callCount, 1);
-    t.is(delayStub.args[0][0], 100);
-  },
-);
+  t.true(
+    await promiseUtils.retry(testFn, {
+      maxAttempts: 3,
+      delayMs: 100,
+    })(),
+  );
+  t.is(delayStub.callCount, 1);
+  t.is(delayStub.args[0][0], 100);
+});
 
-test('succeeds on retry', async (t: TestContext): Promise<void> => {
+test('succeeds on retry', async t => {
   let count = 0;
   const testFn = async () => {
     if (count++ === 0) {
@@ -73,7 +70,7 @@ test('succeeds on retry', async (t: TestContext): Promise<void> => {
   t.true(await promiseUtils.retry(testFn, { maxAttempts: 3 })());
 });
 
-test('currys multiple args properly', async (t: TestContext): Promise<void> => {
+test('currys multiple args properly', async t => {
   const expectedFirstArg: string = 'first';
   const expectedSecondArg: string = 'second';
 

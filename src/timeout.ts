@@ -11,8 +11,10 @@
 export function timeout<T extends Function>(
   fn: T,
   expirationTime: number,
-  errorMessage: string,
+  errorMessage?: string,
 ): T {
+  errorMessage =
+    errorMessage || `Could not resolve ${fn.name || '<anonymous>'} within ${expirationTime} ms`;
   // tslint:disable-next-line:typedef no-any (typedef is hacked because we're hijacking fn)
   return (async function race(this: any) {
     return Promise.race([

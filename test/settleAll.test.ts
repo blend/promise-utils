@@ -1,4 +1,5 @@
-import { test } from 'ava';
+import test from 'ava';
+
 import * as promiseUtils from '../src/index';
 
 test('returns settled promise values when no errFn provided', async t => {

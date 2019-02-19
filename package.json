@@ -1,6 +1,6 @@
 {
   "name": "promise-utils",
-  "version": "1.15.0",
+  "version": "1.16.0",
   "description": "Lodash-like utilities for dealing with promises",
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",
@@ -27,7 +27,7 @@
     "files": [
       "dist/test/**/*.test.js"
     ],
-    "source": [
+    "sources": [
       "src/*.ts",
       "src/**/*.ts"
     ],
@@ -55,23 +55,23 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@types/lodash": "4.14.111",
-    "@types/sinon": "5.0.1",
-    "ava": "0.25.0",
+    "@types/lodash": "4.14.121",
+    "@types/sinon": "7.0.6",
+    "ava": "1.2.1",
     "grunt": "1.0.3",
     "grunt-ava": "0.19.0",
     "grunt-contrib-watch": "1.1.0",
     "grunt-force-task": "2.0.0",
-    "grunt-prettier": "1.1.0",
-    "grunt-ts": "6.0.0-beta.20",
+    "grunt-prettier": "1.1.1",
+    "grunt-ts": "6.0.0-beta.22",
     "grunt-tslint": "5.0.2",
-    "nyc": "11.6.0",
-    "sinon": "6.1.3",
-    "tslint": "5.10.0",
-    "typescript": "2.9.2"
+    "nyc": "13.3.0",
+    "sinon": "7.2.4",
+    "tslint": "5.12.1",
+    "typescript": "3.3.3"
   },
   "dependencies": {
-    "lodash": "4.17.10",
+    "lodash": "4.17.11",
     "moment": "2.24.0"
   }
 }

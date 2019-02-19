@@ -1,5 +1,9 @@
 # Release Notes
 
+## 1.16.0
+### Improvements
+- [LEND-3824](https://blendlabs.atlassian.net/browse/LEND-3824) Make error messages optional for invert/timeout. [#24](https://git.blendlabs.com/blend/promise-utils/pull/24)
+
 ## 1.15.0
 ### Features
 - [DS-1105](https://blendlabs.atlassian.net/browse/DS-1105) settleAll. [#22](https://git.blendlabs.com/blend/promise-utils/pull/22)
