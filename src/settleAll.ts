@@ -14,16 +14,24 @@ import { map } from './map';
  */
 export async function settleAll<T, V>(
   promises: Promise<T>[],
-  // tslint:disable-next-line:no-any
   errFn: (err: Error) => V = _.identity,
 ): Promise<{ errors: V[]; results: T[] }> {
-  const res: { errors: V[]; results: T[] } = { errors: [], results: [] };
-  await map(promises, async (p: Promise<T>) => {
-    try {
-      res.results.push(await p);
-    } catch (err) {
-      res.errors.push(errFn(err));
-    }
-  });
-  return res;
+  const intermediateResults: { errors?: V; results?: T }[] = await map(
+    promises,
+    async (p: Promise<T>) => {
+      try {
+        return { results: await p };
+      } catch (err) {
+        return { errors: errFn(err) };
+      }
+    },
+  );
+  return _.reduce(
+    intermediateResults,
+    (acc: { errors: V[]; results: T[] }, intermediateResult: { errors?: V; results?: T }) => {
+      _.map(intermediateResult, (value: V | T, key: string) => _.get(acc, key).push(value));
+      return acc;
+    },
+    { results: [], errors: [] },
+  );
 }

@@ -2,10 +2,10 @@ import test from 'ava';
 
 import * as promiseUtils from '../src/index';
 
-test('returns settled promise values when no errFn provided', async t => {
+test('returns settled promise values in order when no errFn provided', async t => {
   const testPromises: Promise<any>[] = [
-    Promise.reject(100),
-    Promise.resolve({ success: true }),
+    promiseUtils.invert(promiseUtils.delay(500, null), 'delayed error'),
+    promiseUtils.delay(500, { success: true }),
     Promise.resolve(3),
     Promise.reject(new Error('failed')),
     Promise.resolve('success'),
@@ -13,7 +13,7 @@ test('returns settled promise values when no errFn provided', async t => {
   ];
   const res = await promiseUtils.settleAll(testPromises);
   t.deepEqual(res, {
-    errors: [100, new Error('failed'), 'also failed'],
+    errors: [new Error('delayed error'), new Error('failed'), 'also failed'],
     results: [{ success: true }, 3, 'success'],
   });
 });

@@ -13,19 +13,19 @@ const map_1 = require("./map");
  *
  * @returns A list of resolved and rejected values of promises.
  */
-async function settleAll(promises, 
-// tslint:disable-next-line:no-any
-errFn = _.identity) {
-    const res = { errors: [], results: [] };
-    await map_1.map(promises, async (p) => {
+async function settleAll(promises, errFn = _.identity) {
+    const intermediateResults = await map_1.map(promises, async (p) => {
         try {
-            res.results.push(await p);
+            return { results: await p };
         }
         catch (err) {
-            res.errors.push(errFn(err));
+            return { errors: errFn(err) };
         }
     });
-    return res;
+    return _.reduce(intermediateResults, (acc, intermediateResult) => {
+        _.map(intermediateResult, (value, key) => _.get(acc, key).push(value));
+        return acc;
+    }, { results: [], errors: [] });
 }
 exports.settleAll = settleAll;
 //# sourceMappingURL=settleAll.js.map
