@@ -11,6 +11,12 @@ $ npm install promise-utils
 
 ## Usage
 
+## Test
+
+```
+npm test
+```
+
 ## API
 
 ## Examples
