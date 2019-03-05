@@ -8,7 +8,7 @@ jobs:
 
     steps:
       - checkout
-      - run: npm ci
+      - run: npm install
       - run: npm test
       - store_artifacts:
           path: coverage
