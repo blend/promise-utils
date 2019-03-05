@@ -14,7 +14,7 @@ $ npm install promise-utils
 ## Test
 
 ```
-npm test
+$ npm test
 ```
 
 ## API
