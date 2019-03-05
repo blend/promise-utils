@@ -9,7 +9,9 @@ functions for dealing with promises.
 $ npm install promise-utils
 ```
 
-## Usage
+## Examples
+
+todo
 
 ## Test
 
@@ -21,8 +23,6 @@ $ npm test
 
 (Link to typedoc)
 
-## Examples
-
 ## License
 
-MIT
+[MIT](LICENSE)
