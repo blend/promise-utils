@@ -12,7 +12,7 @@ export async function delay<T>(delayTimeMs: number): Promise<void>;
 export async function delay(delayTime: any, value?: any) {
   return new Promise(
     // tslint:disable-next-line:no-any (typed by overload signatures)
-    (resolve: (__: any) => void): number => setTimeout(() => resolve(value), delayTime),
+    (resolve: (__: any) => void): NodeJS.Timeout => setTimeout(() => resolve(value), delayTime),
   );
 }
 

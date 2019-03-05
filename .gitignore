@@ -11,3 +11,5 @@ resources
 tscommand-*
 .tscache/
 dist/test
+
+docs-build/
