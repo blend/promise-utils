@@ -16,7 +16,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@git.blendlabs.com:blend/promise-utils.git"
+    "url": "https://github.com/blend/promise-utils.git"
   },
   "prettier": {
     "singleQuote": true,
