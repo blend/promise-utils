@@ -8,7 +8,7 @@
     "pretty": "prettier --list-different '{src,test}/**/**/*.ts'",
     "lintSrc": "tslint --project tsconfig.json --config tslint.js 'src/**/*.ts'",
     "lintTest": "tslint --project tsconfig.json --config tslint.test.js 'test/**/*.ts'",
-    "lint": "yarn pretty && npm run lintSrc && npm run lintTest",
+    "lint": "npm run lintSrc && npm run lintTest",
     "lintFix": "npm run lintSrc --fix && npm run lintTest --fix",
     "testCode": "nyc ava",
     "test": "tsc && npm run testCode && npm run lint && ./bin/assert_no_file_modifications.sh",
