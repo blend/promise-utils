@@ -19,6 +19,10 @@ npm test
 
 ## API
 
+(Link to typedoc)
+
 ## Examples
 
 ## License
+
+MIT
