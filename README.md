@@ -34,19 +34,19 @@ make docs
 The [latest][2] version pushed will be located at
 
 ```
-github.com/pages/blend/promise-utils/latest/
+blend.github.io/promise-utils/latest
 ```
 
 and all past [versions][3] can be found at
 
 ```
-github.com/pages/blend/promise-utils/versions
+blend.github.io/promise-utils/versions
 ```
 
 ## License
 
 [MIT](LICENSE)
 
-[1]: https://github.com/pages/blend/promise-utils/
-[2]: https://github.com/pages/blend/promise-utils/latest/
-[3]: https://github.com/pages/blend/promise-utils/versions
+[1]: https://blend.github.io/promise-utils
+[2]: https://blend.github.io/promise-utils/latest/
+[3]: https://blend.github.io/promise-utils/versions
