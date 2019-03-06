@@ -54,7 +54,7 @@
     ]
   },
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
     "@types/lodash": "4.14.121",
     "@types/sinon": "7.0.6",
