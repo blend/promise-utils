@@ -9,6 +9,7 @@ help:
 	@echo 'Usage:'
 	@echo '   make gh-pages    Checkout `gh-pages` in `docs-build/`'
 	@echo '   make docs        Generate the documentation in `docs-build/`'
+	@echo '   make push-docs   Push the documentation to Github'
 	@echo ''
 
 gh-pages:
