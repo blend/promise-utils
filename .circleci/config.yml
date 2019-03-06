@@ -10,7 +10,7 @@ jobs:
       - checkout
       - run: npm ci
       - run: npm test
-      - run: npm run docs
+      - run: make docs
 
       - store_artifacts:
           path: coverage

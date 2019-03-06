@@ -26,8 +26,14 @@ $ npm test
 
 ## Documentation
 
+Build docs
 ```
-$ npm run docs
+$ make docs
+```
+
+Push docs to Github
+```
+$ make push-docs
 ```
 
 ## License
