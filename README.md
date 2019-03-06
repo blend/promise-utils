@@ -27,7 +27,7 @@ $ npm test
 ## Documentation
 
 ```
-$ make docs
+$ npm run docs
 ```
 
 ## License

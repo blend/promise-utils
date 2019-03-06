@@ -12,7 +12,8 @@
     "lintFix": "npm run lintSrc --fix && npm run lintTest --fix",
     "testCode": "nyc ava",
     "test": "tsc && npm run testCode && npm run lint && ./bin/assert_no_file_modifications.sh",
-    "start": "grunt"
+    "start": "grunt",
+    "docs": "typedoc --excludeNotExported --excludePrivate --readme none --mode file --out ./docs-build/$(node docs/current-version.js)/src"
   },
   "repository": {
     "type": "git",
