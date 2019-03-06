@@ -41,8 +41,8 @@
     "reporter": [
       "html",
       "json",
-      "text",
-      "lcov"
+      "lcov",
+      "text"
     ],
     "check-coverage": true,
     "lines": 100,
