@@ -15,7 +15,8 @@ $ npm install promise-utils
 
 ## API
 
-(Link to typedoc)
+- [Documentation][2]
+- [Past versions][3]
 
 ## Test
 
@@ -25,22 +26,8 @@ $ npm test
 
 ## Documentation
 
-The [documentation][1] can be automatically via
-
 ```
-make docs
-```
-
-The [latest][2] version pushed will be located at
-
-```
-blend.github.io/promise-utils/latest
-```
-
-and all past [versions][3] can be found at
-
-```
-blend.github.io/promise-utils/versions
+$ make docs
 ```
 
 ## License
