@@ -10,7 +10,7 @@ Lodash-like utility functions for dealing with promises.
 ## Installation
 
 ```
-$ npm install promise-utils
+$ npm install blend-promise-utils
 ```
 
 ## API

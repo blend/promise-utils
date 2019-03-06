@@ -1,7 +1,14 @@
 {
-  "name": "promise-utils",
-  "version": "1.16.1",
+  "name": "blend-promise-utils",
+  "version": "1.16.2",
+  "author": "Blend",
+  "license": "MIT",
+  "homepage": "https://blend.github.io/promise-utils",
   "description": "Lodash-like utilities for dealing with promises",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/blend/promise-utils.git"
+  },
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",
   "scripts": {
@@ -13,10 +20,6 @@
     "testCode": "nyc ava",
     "test": "tsc && npm run testCode && npm run lint && ./bin/assert_no_file_modifications.sh",
     "start": "grunt"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/blend/promise-utils.git"
   },
   "prettier": {
     "singleQuote": true,
@@ -53,8 +56,10 @@
       "dist/test/**/*.js"
     ]
   },
-  "author": "",
-  "license": "ISC",
+  "dependencies": {
+    "lodash": "4.17.11",
+    "moment": "2.24.0"
+  },
   "devDependencies": {
     "@types/lodash": "4.14.121",
     "@types/sinon": "7.0.6",
@@ -72,9 +77,5 @@
     "tslint": "5.12.1",
     "typedoc": "0.14.2",
     "typescript": "3.3.3"
-  },
-  "dependencies": {
-    "lodash": "4.17.11",
-    "moment": "2.24.0"
   }
 }
