@@ -10,6 +10,9 @@ jobs:
       - checkout
       - run: npm ci
       - run: npm test
+      - run: npm run docs
+
       - store_artifacts:
           path: coverage
-          destination: coverage
+      - store_artifacts:
+          path: docs-build
