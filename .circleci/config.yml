@@ -14,5 +14,7 @@ jobs:
 
       - store_artifacts:
           path: coverage
+          destination: coverage
       - store_artifacts:
           path: docs-build
+          destination: docs-build
