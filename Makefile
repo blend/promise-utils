@@ -1,4 +1,4 @@
-.PHONY: help gh-pages docs
+.PHONY: help gh-pages docs push-docs
 
 CURRENT_VERSION := $(shell node docs/current-version.js)
 DOCS_DIR := ./docs-build/$(CURRENT_VERSION)
@@ -23,7 +23,7 @@ docs:
 
 	rm -rf $(DOCS_DIR)
 
-	# Generated new docs.
+	# Generate new docs.
 	./node_modules/.bin/typedoc \
 	  --excludeNotExported \
 	  --excludePrivate \
