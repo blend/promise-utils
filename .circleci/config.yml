@@ -10,6 +10,7 @@ jobs:
       - checkout
       - run: npm ci
       - run: npm test
+      - run: cat coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
       - run: make docs
 
       - store_artifacts:
