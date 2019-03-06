@@ -41,6 +41,7 @@
     "reporter": [
       "html",
       "json",
+      "lcov",
       "text"
     ],
     "check-coverage": true,
@@ -58,6 +59,7 @@
     "@types/lodash": "4.14.121",
     "@types/sinon": "7.0.6",
     "ava": "1.2.1",
+    "coveralls": "3.0.3",
     "grunt": "1.0.3",
     "grunt-ava": "0.19.0",
     "grunt-contrib-watch": "1.1.0",
