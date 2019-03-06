@@ -49,4 +49,4 @@ blend.github.io/promise-utils/versions
 
 [1]: https://blend.github.io/promise-utils
 [2]: https://blend.github.io/promise-utils/latest/
-[3]: https://blend.github.io/promise-utils/versions
+[3]: https://blend.github.io/promise-utils/versions.html
