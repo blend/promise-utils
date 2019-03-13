@@ -15,7 +15,7 @@ $ npm install blend-promise-utils
 
 ## Usage Example
 
-```
+```js
 const promiseUtils = require('promise-utils')
 
 async function main() {
