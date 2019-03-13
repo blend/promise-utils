@@ -13,6 +13,27 @@ Lodash-like utility functions for dealing with promises.
 $ npm install blend-promise-utils
 ```
 
+## Usage Example
+
+```
+const promiseUtils = require('promise-utils')
+
+async function main() {
+  console.log(
+    await promiseUtils.filter(
+      [1000, 2000, 4000],
+      async (x, i) => {
+        await promiseUtils.delay(x, x)
+        console.log(`Processed ${x}`)
+        return x <= 2000
+      }
+    )
+  )
+}
+
+main()
+```
+
 ## API
 
 - [Documentation][2]
