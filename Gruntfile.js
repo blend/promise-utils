@@ -30,8 +30,8 @@ module.exports = function(grunt) {
 
     run: {
       test: {
-        cmd: 'yarn',
-        args: ['testCode']
+        cmd: 'npm',
+        args: ['run', 'testCode']
       }
     },
 
