@@ -1,6 +1,5 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const _ = require("lodash");
 /**
  * Inverts the given promise - i.e. throws an error if it completes successfully and returns the
  * error if it throws one.
@@ -12,9 +11,9 @@ const _ = require("lodash");
 // tslint:disable-next-line:no-any (returns the rejection which is untyped)
 async function invert(promise, message) {
     message = message || 'Expected promise to reject';
-    return promise.then((res) => {
+    return promise.then(res => {
         throw new Error(message);
-    }, _.identity);
+    }, err => err);
 }
 exports.invert = invert;
 //# sourceMappingURL=invert.js.map

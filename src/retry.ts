@@ -1,5 +1,3 @@
-import * as _ from 'lodash';
-
 import { delay } from './delay';
 
 export interface RetryOpts {
@@ -28,7 +26,7 @@ export function retry<T extends Function>(fn: T, retryOpts: RetryOpts): T {
   // tslint:disable-next-line:no-any (casting as any to preserve original function type)
   return ((async (...args: any[]): Promise<any> => {
     let lastErr: Error = new Error(`Could not complete function within ${retryOpts.maxAttempts}`);
-    for (const __ of _.range(retryOpts.maxAttempts)) {
+    for (let i = 0; i < retryOpts.maxAttempts; ++i) {
       try {
         return await fn(...args);
       } catch (err) {

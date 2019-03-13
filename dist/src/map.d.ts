@@ -18,8 +18,8 @@ export declare function map<T, V>(input: T[], iteratee: (value: T) => Promise<V>
 export declare function map<T extends Object, V>(input: T, iteratee: (value: T[keyof T], key: string) => Promise<V>): Promise<V[]>;
 export declare function map<T extends Object, V>(input: T, iteratee: (value: T[keyof T]) => Promise<V>): Promise<V[]>;
 /**
- * The same as map but runs a maximum of limit async operations at a time. Also does not have the
- * same ordering guarantees.
+ * The same as map but runs a maximum of limit async operations at a time with the same ordering
+ * guarantees.
  *
  * @param {Array | Iterable | Object} input - A collection to iterate over.
  * @param {number} limit - The maximum number of async operations at a time.

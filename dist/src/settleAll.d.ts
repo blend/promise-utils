@@ -1,3 +1,7 @@
+export interface SettledPromises<T, V> {
+    errors: V[];
+    results: T[];
+}
 /**
  * Attempts to settle all promises in promises in parallel, calling errFn when a promise rejects.
  * Similar to Promise.all, but does not fail fast. For resolved promises, the result array contains
@@ -9,7 +13,4 @@
  *
  * @returns A list of resolved and rejected values of promises.
  */
-export declare function settleAll<T, V>(promises: Promise<T>[], errFn?: (err: Error) => V): Promise<{
-    errors: V[];
-    results: T[];
-}>;
+export declare function settleAll<T, V>(promises: Promise<T>[], errFn?: (err: any) => V): Promise<SettledPromises<T, V>>;

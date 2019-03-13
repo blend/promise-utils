@@ -1,5 +1,9 @@
-import * as _ from 'lodash';
 import { map } from './map';
+
+export interface SettledPromises<T, V> {
+  errors: V[];
+  results: T[];
+}
 
 /**
  * Attempts to settle all promises in promises in parallel, calling errFn when a promise rejects.
@@ -14,8 +18,9 @@ import { map } from './map';
  */
 export async function settleAll<T, V>(
   promises: Promise<T>[],
-  errFn: (err: Error) => V = _.identity,
-): Promise<{ errors: V[]; results: T[] }> {
+  // tslint:disable-next-line:no-any (no way to guarantee error typings)
+  errFn: (err: any) => V = err => err,
+): Promise<SettledPromises<T, V>> {
   const intermediateResults: { errors?: V; results?: T }[] = await map(
     promises,
     async (p: Promise<T>) => {
@@ -26,12 +31,12 @@ export async function settleAll<T, V>(
       }
     },
   );
-  return _.reduce(
-    intermediateResults,
-    (acc: { errors: V[]; results: T[] }, intermediateResult: { errors?: V; results?: T }) => {
-      _.map(intermediateResult, (value: V | T, key: string) => _.get(acc, key).push(value));
-      return acc;
-    },
-    { results: [], errors: [] },
-  );
+  const settledPromises: SettledPromises<T, V> = { results: [], errors: [] };
+  for (const result of intermediateResults) {
+    for (const key in result) {
+      // @ts-ignore typings line up, but typescript is hard pressed to agree
+      settledPromises[key].push(result[key]);
+    }
+  }
+  return settledPromises;
 }

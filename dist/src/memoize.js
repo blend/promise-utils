@@ -1,7 +1,5 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const _ = require("lodash");
-const moment = require("moment");
 /**
  * Caches the results of an async function. When creating a hash to store function results against,
  * the callback is omitted from the hash and an optional hash function can be used.
@@ -16,7 +14,9 @@ const moment = require("moment");
  *     results. It has all the arguments applied to it and must be synchronous.
  * @returns a memoized version of fn
  */
-function memoize(fn, hasher = _.identity, timeoutMs) {
+function memoize(fn, 
+// tslint:disable-next-line:no-any (w/o type for Function args, can't assert a type here)
+hasher = (arg) => arg, timeoutMs) {
     // tslint:disable:no-any (unfortunately we can't give the FnType any more clarity or it limits
     // what you can do with it)
     const memos = new Map();
@@ -24,10 +24,7 @@ function memoize(fn, hasher = _.identity, timeoutMs) {
     return (async (...args) => {
         const key = hasher(...args);
         if (memos.has(key)) {
-            if (!timeoutMs ||
-                moment(memos.get(key).timestamp)
-                    .add(timeoutMs, 'milliseconds')
-                    .isAfter(moment())) {
+            if (!timeoutMs || Date.now() < memos.get(key).expiration) {
                 return memos.get(key).value;
             }
         }
@@ -38,7 +35,7 @@ function memoize(fn, hasher = _.identity, timeoutMs) {
         queues.set(key, promise);
         try {
             const ret = await queues.get(key);
-            memos.set(key, { value: ret, timestamp: Date.now() });
+            memos.set(key, { value: ret, expiration: Date.now() + (timeoutMs || 0) });
             return ret;
         }
         finally {

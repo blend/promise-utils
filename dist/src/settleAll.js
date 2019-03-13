@@ -1,6 +1,5 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const _ = require("lodash");
 const map_1 = require("./map");
 /**
  * Attempts to settle all promises in promises in parallel, calling errFn when a promise rejects.
@@ -13,7 +12,9 @@ const map_1 = require("./map");
  *
  * @returns A list of resolved and rejected values of promises.
  */
-async function settleAll(promises, errFn = _.identity) {
+async function settleAll(promises, 
+// tslint:disable-next-line:no-any (no way to guarantee error typings)
+errFn = err => err) {
     const intermediateResults = await map_1.map(promises, async (p) => {
         try {
             return { results: await p };
@@ -22,10 +23,14 @@ async function settleAll(promises, errFn = _.identity) {
             return { errors: errFn(err) };
         }
     });
-    return _.reduce(intermediateResults, (acc, intermediateResult) => {
-        _.map(intermediateResult, (value, key) => _.get(acc, key).push(value));
-        return acc;
-    }, { results: [], errors: [] });
+    const settledPromises = { results: [], errors: [] };
+    for (const result of intermediateResults) {
+        for (const key in result) {
+            // @ts-ignore typings line up, but typescript is hard pressed to agree
+            settledPromises[key].push(result[key]);
+        }
+    }
+    return settledPromises;
 }
 exports.settleAll = settleAll;
 //# sourceMappingURL=settleAll.js.map

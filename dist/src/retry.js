@@ -1,6 +1,5 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const _ = require("lodash");
 const delay_1 = require("./delay");
 /**
  * Attempts to get a successful response from task no more than times times before returning an
@@ -22,7 +21,7 @@ function retry(fn, retryOpts) {
     // tslint:disable-next-line:no-any (casting as any to preserve original function type)
     return (async (...args) => {
         let lastErr = new Error(`Could not complete function within ${retryOpts.maxAttempts}`);
-        for (const __ of _.range(retryOpts.maxAttempts)) {
+        for (let i = 0; i < retryOpts.maxAttempts; ++i) {
             try {
                 return await fn(...args);
             }

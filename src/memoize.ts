@@ -1,6 +1,3 @@
-import * as _ from 'lodash';
-import * as moment from 'moment';
-
 /**
  * Caches the results of an async function. When creating a hash to store function results against,
  * the callback is omitted from the hash and an optional hash function can be used.
@@ -17,23 +14,19 @@ import * as moment from 'moment';
  */
 export function memoize<FnType extends Function>(
   fn: FnType,
-  hasher: Function = _.identity,
+  // tslint:disable-next-line:no-any (w/o type for Function args, can't assert a type here)
+  hasher: Function = (arg: any) => arg,
   timeoutMs?: number,
 ): FnType {
   // tslint:disable:no-any (unfortunately we can't give the FnType any more clarity or it limits
   // what you can do with it)
-  const memos: Map<any, { value: any; timestamp: number }> = new Map();
+  const memos: Map<any, { value: any; expiration: number }> = new Map();
   const queues: Map<any, Promise<any>> = new Map();
 
   return ((async (...args: any[]): Promise<any> => {
     const key: any = hasher(...args);
     if (memos.has(key)) {
-      if (
-        !timeoutMs ||
-        moment(memos.get(key)!.timestamp)
-          .add(timeoutMs, 'milliseconds')
-          .isAfter(moment())
-      ) {
+      if (!timeoutMs || Date.now() < memos.get(key)!.expiration) {
         return memos.get(key)!.value;
       }
     }
@@ -47,7 +40,7 @@ export function memoize<FnType extends Function>(
 
     try {
       const ret: any = await queues.get(key)!;
-      memos.set(key, { value: ret, timestamp: Date.now() });
+      memos.set(key, { value: ret, expiration: Date.now() + (timeoutMs || 0) });
       return ret;
     } finally {
       queues.delete(key);

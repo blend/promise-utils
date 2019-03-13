@@ -4,7 +4,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 async function delay(delayTime, value) {
     return new Promise(
     // tslint:disable-next-line:no-any (typed by overload signatures)
-    (resolve) => setTimeout(() => resolve(value), delayTime));
+    resolve => setTimeout(() => resolve(value), delayTime));
 }
 exports.delay = delay;
 // tslint:disable-next-line:no-any typedef (typed by overload signatures)

@@ -6,4 +6,4 @@
  * @param {string} message - the message to throw if the promise resolves
  * @returns the error thrown by the promise
  */
-export declare function invert<T>(promise: Promise<T>, message?: string): Promise<any>;
+export declare function invert(promise: Promise<any>, message?: string): Promise<any>;
