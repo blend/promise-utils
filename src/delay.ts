@@ -9,10 +9,10 @@
 export async function delay<T>(delayTimeMs: number, value: T): Promise<T>;
 export async function delay<T>(delayTimeMs: number): Promise<void>;
 // tslint:disable-next-line:no-any typedef (typed by overload signatures)
-export async function delay(delayTime: any, value?: any) {
+export async function delay<T>(delayTime: any, value?: T): Promise<void | T> {
   return new Promise(
     // tslint:disable-next-line:no-any (typed by overload signatures)
-    (resolve: (__: any) => void): NodeJS.Timeout => setTimeout(() => resolve(value), delayTime),
+    resolve => setTimeout(() => resolve(value), delayTime),
   );
 }
 

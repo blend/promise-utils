@@ -1,6 +1,6 @@
 {
   "name": "blend-promise-utils",
-  "version": "1.16.2",
+  "version": "1.17.0",
   "author": "Blend",
   "license": "MIT",
   "homepage": "https://blend.github.io/promise-utils",
@@ -48,6 +48,9 @@
       "lcov",
       "text"
     ],
+    "require": [
+      "source-map-support/register"
+    ],
     "check-coverage": true,
     "lines": 100,
     "functions": 100,
@@ -57,17 +60,14 @@
       "dist/test/**/*.js"
     ]
   },
-  "dependencies": {
-    "lodash": "4.17.11",
-    "moment": "2.24.0"
-  },
   "devDependencies": {
     "@types/lodash": "4.14.121",
     "@types/sinon": "7.0.6",
     "ava": "1.2.1",
     "coveralls": "3.0.3",
+    "lodash": "4.17.11",
     "grunt": "1.0.3",
-    "grunt-ava": "0.19.0",
+    "grunt-run": "0.8.1",
     "grunt-contrib-watch": "1.1.0",
     "grunt-force-task": "2.0.0",
     "grunt-prettier": "1.1.1",

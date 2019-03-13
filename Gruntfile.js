@@ -28,15 +28,11 @@ module.exports = function(grunt) {
       }
     },
 
-    ava: {
+    run: {
       test: {
-        options: {
-          nyc: true,
-        },
-        files: {
-          src: COMPILED_TEST_FILES,
-        },
-      },
+        cmd: 'npm',
+        args: ['run', 'testCode']
+      }
     },
 
     tslint: {
@@ -76,8 +72,8 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-tslint');
   grunt.loadNpmTasks('grunt-prettier');
   grunt.loadNpmTasks('grunt-force-task');
-  grunt.loadNpmTasks('grunt-ava');
+  grunt.loadNpmTasks('grunt-run');
 
-  grunt.registerTask('test', [ 'ts', 'ava', 'prettier', 'tslint:src', 'tslint:test']);
+  grunt.registerTask('test', [ 'ts', 'run:test', 'prettier', 'tslint:src', 'tslint:test']);
   grunt.registerTask('default', ['force:test', 'watch']);
 };

@@ -1,4 +1,15 @@
-import * as _ from 'lodash';
+/**
+ * Converts numeric keys to actual numbers - `for in` will always provide string keys, even
+ * for array indexes or numeric keys of objects
+ */
+function asNumericKey(key: string): string | number {
+  // tslint:disable-next-line:no-any (isNaN for some reason is not typed to accept strings)
+  if (!isNaN(key as any)) {
+    return Number(key);
+  } else {
+    return key;
+  }
+}
 
 /**
  * Produces a new collection of values by mapping each value in coll through the iteratee
@@ -33,12 +44,18 @@ export async function map(input: any, iteratee: any): Promise<any[]> {
   if (!input) {
     return [];
   }
-  return Promise.all(_.map(input, iteratee));
+
+  const output = [];
+  for (const key in input) {
+    const possiblyNumericKey = asNumericKey(key);
+    output.push(iteratee(input[possiblyNumericKey], possiblyNumericKey));
+  }
+  return Promise.all(output);
 }
 
 /**
- * The same as map but runs a maximum of limit async operations at a time. Also does not have the
- * same ordering guarantees.
+ * The same as map but runs a maximum of limit async operations at a time with the same ordering
+ * guarantees.
  *
  * @param {Array | Iterable | Object} input - A collection to iterate over.
  * @param {number} limit - The maximum number of async operations at a time.
@@ -71,21 +88,36 @@ export async function mapLimit<V>(input: any, limit: number, iteratee: any): Pro
     return [];
   }
 
-  // tslint:disable-next-line:no-any
-  const stack: any[] = _.reverse(input.map ? _.clone(input) : _.toPairs(input));
-  return await flatMap(_.range(limit), async () => {
-    const partialOutput: V[] = [];
-    while (!_.isEmpty(stack)) {
-      // tslint:disable-next-line:no-any
-      const val: any = stack.pop();
-      if (input.map) {
-        partialOutput.push(await iteratee(val, stack.length));
-      } else {
-        partialOutput.push(await iteratee(..._.reverse(val)));
-      }
+  const size = (() => {
+    if (input.length !== undefined) {
+      return input.length;
     }
-    return partialOutput;
+
+    let count = 0;
+    for (const __ in input) {
+      ++count;
+    }
+    return count;
+  })();
+
+  const allValues = new Array(size);
+  const results = new Array(size);
+
+  let i = 0;
+  for (const key in input) {
+    const possiblyNumericKey = asNumericKey(key);
+    allValues[size - 1 - i] = [input[key], i, possiblyNumericKey];
+    ++i;
+  }
+
+  await map(new Array(limit).fill(0), async () => {
+    while (allValues.length > 0) {
+      // tslint:disable-next-line:no-any
+      const [val, index, key] = allValues.pop();
+      results[index] = await iteratee(val, key);
+    }
   });
+  return results;
 }
 
 /**
@@ -142,5 +174,16 @@ export async function flatMap(input: any, iteratee: any): Promise<any[]> {
   if (!input) {
     return [];
   }
-  return _.flatten(await map(input, iteratee));
+  const output = [];
+  const nestedOutput = await map(input, iteratee);
+  for (const partialOutput of nestedOutput) {
+    // tslint:disable-next-line:no-any (could possibly be an array)
+    if (partialOutput && (partialOutput as any).length) {
+      // tslint:disable-next-line:no-any (is definitely an array)
+      output.push(...(partialOutput as any));
+    } else {
+      output.push(partialOutput);
+    }
+  }
+  return output;
 }
