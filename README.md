@@ -3,9 +3,11 @@ promise-utils
 
 [![Build Status](https://circleci.com/gh/blend/promise-utils.svg?style=shield)](https://circleci.com/gh/blend/promise-utils)
 [![Coverage Status](https://coveralls.io/repos/github/blend/promise-utils/badge.svg?branch=master)](https://coveralls.io/github/blend/promise-utils?branch=master)
+![Minzipped size](https://img.shields.io/bundlephobia/minzip/blend-promise-utils.svg)
 
-Promise-utils is a JavaScript/TypeScript library that provides
-Lodash-like utility functions for dealing with native ES6 promises.
+Promise-utils is a dependency-free JavaScript/TypeScript library that
+provides Lodash-like utility functions for dealing with native ES6
+promises.
 
 ## Installation
 
