@@ -17,18 +17,52 @@ $ npm install blend-promise-utils
 
 ```js
 const promiseUtils = require('promise-utils')
+const { promises: fs } = require('fs')
+const request = require('request-promise-native');
+const moment = require('moment');
+const _ = require('lodash');
 
 async function main() {
-  console.log(
-    await promiseUtils.filter(
-      [1000, 2000, 4000],
-      async (x, i) => {
-        await promiseUtils.delay(x, x)
-        console.log(`Processed ${x}`)
-        return x <= 2000
+  const cachedResponse = promiseUtils.memoize(
+    async (contents) => request(contents.url),
+    contents => contents.url,
+    moment.duration(15, 'seconds').asMilliseconds(), // contents could change
+  );
+
+  const fileContents = await promiseUtils.filter(
+    ['file1', 'file2', 'file3],
+    async fileName => {
+      const rawData = await fs.read(fileName);
+      return JSON.parse(rawData);
+    },
+  );
+
+  while (true) {
+    await promiseUtils.delay(150); // avoid slamming CPU
+
+    await promiseUtils.mapSeries(
+      fileContents,
+      async contents => {
+        const remoteData = await cachedResponse(contents);
+
+        const { results, errors } = await promiseUtils.settleAll([
+          asyncFunction1(),
+          asyncFunction2(),
+          asyncFunction3(),
+        ]);
+
+        if (!_.isEmpty(errors)) {
+          throw new Error(`Unable to settle all functions: ${JSON.stringify(errors)}`);
+        } else {
+          return results;
+        }
       }
     )
-  )
+  }
+
+  await promiseUtils.retry(flakyFunction, { maxAttempts: 3, delayMs: 150 })(flakyFunctionArgument);
+
+  await promiseUtils.timeout(longFunction, moment.duration(1, 'minute').asMilliseconds())(longFunctionArgument);
 }
 
 main()
