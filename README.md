@@ -30,7 +30,7 @@ async function main() {
   );
 
   const fileContents = await promiseUtils.filter(
-    ['file1', 'file2', 'file3],
+    ['file1', 'file2', 'file3'],
     async fileName => {
       const rawData = await fs.read(fileName);
       return JSON.parse(rawData);
