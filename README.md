@@ -18,7 +18,7 @@ $ npm install blend-promise-utils
 ## Usage Example
 
 ```js
-const promiseUtils = require('promise-utils')
+const promiseUtils = require('blend-promise-utils')
 const { promises: fs } = require('fs')
 const request = require('request-promise-native');
 const moment = require('moment');
@@ -31,10 +31,10 @@ async function main() {
     moment.duration(15, 'seconds').asMilliseconds(), // contents could change
   );
 
-  const fileContents = await promiseUtils.filter(
+  const fileContents = await promiseUtils.map(
     ['file1', 'file2', 'file3'],
     async fileName => {
-      const rawData = await fs.read(fileName);
+      const rawData = await fs.readFile(fileName);
       return JSON.parse(rawData);
     },
   );
