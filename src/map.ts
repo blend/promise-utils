@@ -103,13 +103,13 @@ export async function mapLimit<V>(input: any, limit: number, iteratee: any): Pro
     ++i;
   }
 
-  async function execute(): Promise<void> {
+  const execute = async () => {
     while (allValues.length > 0) {
       // tslint:disable-next-line:no-any
       const [val, index, key] = allValues.pop();
       results[index] = await iteratee(val, key);
     }
-  }
+  };
 
   const allExecutors = [];
   for (let j = 0; j < limit; ++j) {
