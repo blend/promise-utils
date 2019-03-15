@@ -139,10 +139,10 @@ test('uses memos on subsequent calls with timeout', async t => {
     .throws(new Error('this should not happen'));
   const memoized = promiseUtils.memoize(fnToMemoize, () => 1, 1000);
 
-  const ret = await promiseUtils.map(_.range(100), val => memoized(val));
+  const ret = await promiseUtils.mapLimit(_.range(100), 100, val => memoized(val));
   const cacheCount = _.filter(ret, val => val === 'first').length;
   t.is(cacheCount, 100);
-  const ret2 = await promiseUtils.map(_.range(100), memoized);
+  const ret2 = await promiseUtils.mapLimit(_.range(100), 100, memoized);
   const cacheCount2 = _.filter(ret2, val => val === 'first').length;
   t.is(cacheCount2, 100);
 });
