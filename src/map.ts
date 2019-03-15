@@ -41,16 +41,7 @@ export async function map<T extends Object, V>(
 ): Promise<V[]>;
 // tslint:disable-next-line:no-any (types are enforced by overload signatures, validated by tests)
 export async function map(input: any, iteratee: any): Promise<any[]> {
-  if (!input) {
-    return [];
-  }
-
-  const output = [];
-  for (const key in input) {
-    const possiblyNumericKey = asNumericKey(key);
-    output.push(iteratee(input[possiblyNumericKey], possiblyNumericKey));
-  }
-  return Promise.all(output);
+  return mapLimit(input, 10, iteratee);
 }
 
 /**
