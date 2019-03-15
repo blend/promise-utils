@@ -1,3 +1,5 @@
+const DEFAULT_MAP_PARALLELISM = 10;
+
 /**
  * Converts numeric keys to actual numbers - `for in` will always provide string keys, even
  * for array indexes or numeric keys of objects
@@ -41,16 +43,7 @@ export async function map<T extends Object, V>(
 ): Promise<V[]>;
 // tslint:disable-next-line:no-any (types are enforced by overload signatures, validated by tests)
 export async function map(input: any, iteratee: any): Promise<any[]> {
-  if (!input) {
-    return [];
-  }
-
-  const output = [];
-  for (const key in input) {
-    const possiblyNumericKey = asNumericKey(key);
-    output.push(iteratee(input[possiblyNumericKey], possiblyNumericKey));
-  }
-  return Promise.all(output);
+  return mapLimit(input, DEFAULT_MAP_PARALLELISM, iteratee);
 }
 
 /**
@@ -110,13 +103,20 @@ export async function mapLimit<V>(input: any, limit: number, iteratee: any): Pro
     ++i;
   }
 
-  await map(new Array(limit).fill(0), async () => {
+  const execute = async () => {
     while (allValues.length > 0) {
       // tslint:disable-next-line:no-any
       const [val, index, key] = allValues.pop();
       results[index] = await iteratee(val, key);
     }
-  });
+  };
+
+  const allExecutors = [];
+  for (let j = 0; j < limit; ++j) {
+    allExecutors.push(execute());
+  }
+  await Promise.all(allExecutors);
+
   return results;
 }
 
