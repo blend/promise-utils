@@ -12,39 +12,6 @@ function asNumericKey(key: string): string | number {
 }
 
 /**
- * Produces a new collection of values by mapping each value in coll through the iteratee
- * function. The iteratee is called with an item from coll and a callback for when it has finished
- * processing. Each of these callback takes 2 arguments: an error, and the transformed item from
- * coll. If iteratee passes an error to its callback, the main callback (for the map function) is
- * immediately called with the error.
- *
- * Note, that since this function applies the iteratee to each item in parallel, there is no
- * guarantee that the iteratee functions will complete in order. However, the results array will be
- * in the same order as the original coll.
- *
- * @param {Array | Iterable | Object} input - A collection to iterate over.
- * @param {AsyncFunction} iteratee - An async function to apply to each item in coll. The iteratee
- *     should return the transformed item. Invoked with (item, key).
- */
-export async function map<T, V>(
-  input: T[],
-  iteratee: (value: T, index: number) => Promise<V>,
-): Promise<V[]>;
-export async function map<T, V>(input: T[], iteratee: (value: T) => Promise<V>): Promise<V[]>;
-export async function map<T extends Object, V>(
-  input: T,
-  iteratee: (value: T[keyof T], key: string) => Promise<V>,
-): Promise<V[]>;
-export async function map<T extends Object, V>(
-  input: T,
-  iteratee: (value: T[keyof T]) => Promise<V>,
-): Promise<V[]>;
-// tslint:disable-next-line:no-any (types are enforced by overload signatures, validated by tests)
-export async function map(input: any, iteratee: any): Promise<any[]> {
-  return mapLimit(input, 10, iteratee);
-}
-
-/**
  * The same as map but runs a maximum of limit async operations at a time with the same ordering
  * guarantees.
  *
@@ -101,14 +68,58 @@ export async function mapLimit<V>(input: any, limit: number, iteratee: any): Pro
     ++i;
   }
 
-  await map(new Array(limit).fill(0), async () => {
+  if (!input) {
+    return [];
+  }
+
+  async function execute() {
     while (allValues.length > 0) {
       // tslint:disable-next-line:no-any
       const [val, index, key] = allValues.pop();
       results[index] = await iteratee(val, key);
     }
-  });
+  }
+
+  const allExecutors = [];
+  for (let i = 0; i < limit; ++i) {
+    allExecutors.push(execute());
+  }
+  await Promise.all(allExecutors);
+
   return results;
+}
+
+/**
+ * Produces a new collection of values by mapping each value in coll through the iteratee
+ * function. The iteratee is called with an item from coll and a callback for when it has finished
+ * processing. Each of these callback takes 2 arguments: an error, and the transformed item from
+ * coll. If iteratee passes an error to its callback, the main callback (for the map function) is
+ * immediately called with the error.
+ *
+ * Note, that since this function applies the iteratee to each item in parallel, there is no
+ * guarantee that the iteratee functions will complete in order. However, the results array will be
+ * in the same order as the original coll.
+ *
+ * @param {Array | Iterable | Object} input - A collection to iterate over.
+ * @param {AsyncFunction} iteratee - An async function to apply to each item in coll. The iteratee
+ *     should return the transformed item. Invoked with (item, key).
+ */
+export async function map<T, V>(
+  input: T[],
+  iteratee: (value: T, index: number) => Promise<V>,
+): Promise<V[]>;
+export async function map<T, V>(input: T[], iteratee: (value: T) => Promise<V>): Promise<V[]>;
+export async function map<T extends Object, V>(
+  input: T,
+  iteratee: (value: T[keyof T], key: string) => Promise<V>,
+): Promise<V[]>;
+export async function map<T extends Object, V>(
+  input: T,
+  iteratee: (value: T[keyof T]) => Promise<V>,
+): Promise<V[]>;
+// tslint:disable-next-line:no-any (types are enforced by overload signatures, validated by tests)
+export async function map(input: any, iteratee: any): Promise<any[]> {
+  return mapLimit(input, 10, iteratee);
 }
 
 /**
