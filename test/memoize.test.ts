@@ -76,6 +76,60 @@ test('uses memos on subsequent calls (tested by coverage)', async t => {
   t.is(cacheCount2, 100);
 });
 
+test('reset resets a memo', async t => {
+  const fnToMemoize = sandbox
+    .stub()
+    .onFirstCall()
+    .returns('first')
+    .onSecondCall()
+    .returns('second')
+    .onThirdCall()
+    .returns('third');
+  const memoized = promiseUtils.memoize(fnToMemoize);
+
+  const ret = await promiseUtils.map(_.range(100), val => memoized(1));
+  const ret2 = await promiseUtils.map(_.range(100), val => memoized(2));
+  const cacheCount = _.filter(ret, val => val === 'first').length;
+  const cacheCount2 = _.filter(ret2, val => val === 'second').length;
+  t.is(cacheCount, 100);
+  t.is(cacheCount2, 100);
+  memoized.reset(1);
+  const ret3 = await promiseUtils.map(_.range(100), val => memoized(2));
+  const ret4 = await promiseUtils.map(_.range(100), val => memoized(1));
+  const cacheCount3 = _.filter(ret3, val => val === 'second').length;
+  const cacheCount4 = _.filter(ret4, val => val === 'third').length;
+  t.is(cacheCount3, 100);
+  t.is(cacheCount4, 100);
+});
+
+test('clear resets all memos', async t => {
+  const fnToMemoize = sandbox
+    .stub()
+    .onFirstCall()
+    .returns('first')
+    .onSecondCall()
+    .returns('second')
+    .onThirdCall()
+    .returns('third')
+    .onCall(3)
+    .returns('fourth');
+  const memoized = promiseUtils.memoize(fnToMemoize);
+
+  const ret = await promiseUtils.map(_.range(100), val => memoized(1));
+  const ret2 = await promiseUtils.map(_.range(100), val => memoized(2));
+  const cacheCount = _.filter(ret, val => val === 'first').length;
+  const cacheCount2 = _.filter(ret2, val => val === 'second').length;
+  t.is(cacheCount, 100);
+  t.is(cacheCount2, 100);
+  memoized.clear();
+  const ret3 = await promiseUtils.map(_.range(100), val => memoized(2));
+  const ret4 = await promiseUtils.map(_.range(100), val => memoized(1));
+  const cacheCount3 = _.filter(ret3, val => val === 'third').length;
+  const cacheCount4 = _.filter(ret4, val => val === 'fourth').length;
+  t.is(cacheCount3, 100);
+  t.is(cacheCount4, 100);
+});
+
 test('uses memos on subsequent calls with timeout', async t => {
   const fnToMemoize = sandbox
     .stub()
