@@ -13,6 +13,11 @@ test('flattens', async t => {
   t.deepEqual(output, _.flatMap(_.range(10), n => [n, n]));
 });
 
+test('ignores empty arrays', async t => {
+  const output = await promiseUtils.flatMap(_.range(10), async n => (n % 2 === 0 ? [] : [n, n]));
+  t.deepEqual(output, _.flatMap(_.range(10), n => (n % 2 === 0 ? [] : [n, n])));
+});
+
 test('works for objects', async t => {
   const input = { a: 1, b: 2, c: 3, d: 4 };
   const output = await promiseUtils.map(input, async (a, b) => [b, a]);
