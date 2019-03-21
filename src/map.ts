@@ -178,7 +178,7 @@ export async function flatMap(input: any, iteratee: any): Promise<any[]> {
   const nestedOutput = await map(input, iteratee);
   for (const partialOutput of nestedOutput) {
     // tslint:disable-next-line:no-any (could possibly be an array)
-    if (partialOutput && (partialOutput as any).length) {
+    if (partialOutput && (partialOutput as any).length !== undefined) {
       // tslint:disable-next-line:no-any (is definitely an array)
       output.push(...(partialOutput as any));
     } else {
