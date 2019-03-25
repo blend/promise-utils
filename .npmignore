@@ -20,3 +20,4 @@ resources
 tscommand-*
 .tscache/
 docs-build/
+.git
