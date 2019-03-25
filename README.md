@@ -21,7 +21,7 @@ $ npm install blend-promise-utils
 const promiseUtils = require('blend-promise-utils')
 const { promises: fs } = require('fs')
 const request = require('request-promise-native');
-const _ = require('lodash');
+const isEmpty = require('lodash.isempty');
 
 const SECOND_IN_MS = 1000;
 
@@ -54,7 +54,7 @@ async function main() {
           asyncFunction3(),
         ]);
 
-        if (!_.isEmpty(errors)) {
+        if (!isEmpty(errors)) {
           throw new Error(`Unable to settle all functions: ${JSON.stringify(errors)}`);
         } else {
           return results;
