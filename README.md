@@ -29,7 +29,7 @@ async function main() {
   const cachedResponse = promiseUtils.memoize(
     async (contents) => request(contents.url),
     contents => contents.url,
-    15 * SECOND_IN_MS // contents could change
+    15 * MS_IN_SECOND // contents could change
   );
 
   const fileContents = await promiseUtils.map(
@@ -65,7 +65,7 @@ async function main() {
 
   await promiseUtils.retry(flakyFunction, { maxAttempts: 3, delayMs: 150 })(flakyFunctionArgument);
 
-  await promiseUtils.timeout(longFunction, 60 * SECOND_IN_MS)(longFunctionArgument);
+  await promiseUtils.timeout(longFunction, 60 * MS_IN_SECOND)(longFunctionArgument);
 }
 
 main()
