@@ -23,7 +23,7 @@ const { promises: fs } = require('fs')
 const request = require('request-promise-native');
 const isEmpty = require('lodash.isempty');
 
-const SECOND_IN_MS = 1000;
+const MS_IN_SECOND = 1000;
 
 async function main() {
   const cachedResponse = promiseUtils.memoize(
