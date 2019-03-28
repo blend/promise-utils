@@ -21,14 +21,15 @@ $ npm install blend-promise-utils
 const promiseUtils = require('blend-promise-utils')
 const { promises: fs } = require('fs')
 const request = require('request-promise-native');
-const moment = require('moment');
-const _ = require('lodash');
+const isEmpty = require('lodash.isempty');
+
+const MS_IN_SECOND = 1000;
 
 async function main() {
   const cachedResponse = promiseUtils.memoize(
     async (contents) => request(contents.url),
     contents => contents.url,
-    moment.duration(15, 'seconds').asMilliseconds(), // contents could change
+    15 * MS_IN_SECOND // contents could change
   );
 
   const fileContents = await promiseUtils.map(
@@ -53,7 +54,7 @@ async function main() {
           asyncFunction3(),
         ]);
 
-        if (!_.isEmpty(errors)) {
+        if (!isEmpty(errors)) {
           throw new Error(`Unable to settle all functions: ${JSON.stringify(errors)}`);
         } else {
           return results;
@@ -64,7 +65,7 @@ async function main() {
 
   await promiseUtils.retry(flakyFunction, { maxAttempts: 3, delayMs: 150 })(flakyFunctionArgument);
 
-  await promiseUtils.timeout(longFunction, moment.duration(1, 'minute').asMilliseconds())(longFunctionArgument);
+  await promiseUtils.timeout(longFunction, 60 * MS_IN_SECOND)(longFunctionArgument);
 }
 
 main()
