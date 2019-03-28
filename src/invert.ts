@@ -1,5 +1,3 @@
-import * as _ from 'lodash';
-
 /**
  * Inverts the given promise - i.e. throws an error if it completes successfully and returns the
  * error if it throws one.
