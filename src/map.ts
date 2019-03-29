@@ -24,6 +24,11 @@ function asNumericKey(key: string): string | number {
  * guarantee that the iteratee functions will complete in order. However, the results array will be
  * in the same order as the original coll.
  *
+ * Note also - because of how the iteratee is applied, there is a slight possibility that if your
+ * input is an array of promises, they could be settled before the iteratee is applied - if they
+ * reject in this scenario, it would result in an unhandledRejection. As such, you should use
+ * settleAll to deal with arrays of promises, which will avoid this scenario.
+ *
  * @param {Array | Iterable | Object} input - A collection to iterate over.
  * @param {AsyncFunction} iteratee - An async function to apply to each item in coll. The iteratee
  *     should return the transformed item. Invoked with (item, key).
