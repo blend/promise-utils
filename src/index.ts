@@ -2,6 +2,7 @@ export * from './delay';
 export * from './filter';
 export * from './invert';
 export * from './map';
+export * from './errors';
 export * from './retry';
 export * from './settleAll';
 export * from './timeout';
