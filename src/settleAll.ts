@@ -1,4 +1,4 @@
-import { map } from './map';
+import { mapLimit } from './map';
 
 export interface SettledPromises<T, V> {
   errors: V[];
@@ -21,8 +21,9 @@ export async function settleAll<T, V>(
   // tslint:disable-next-line:no-any (no way to guarantee error typings)
   errFn: (err: any) => V = err => err,
 ): Promise<SettledPromises<T, V>> {
-  const intermediateResults: { errors?: V; results?: T }[] = await map(
+  const intermediateResults: { errors?: V; results?: T }[] = await mapLimit(
     promises,
+    promises.length,
     async (p: Promise<T>) => {
       try {
         return { results: await p };

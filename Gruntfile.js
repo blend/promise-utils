@@ -11,12 +11,6 @@ module.exports = function(grunt) {
   // Project configuration.
   grunt.initConfig({
 
-    ts: {
-      default: {
-        tsconfig: true
-      }
-    },
-
     prettier: {
       options: {
         singleQuote: true,
@@ -32,6 +26,10 @@ module.exports = function(grunt) {
       test: {
         cmd: 'npm',
         args: ['run', 'testCode']
+      },
+      compile: {
+        cmd: 'npm',
+        args: ['run', 'prepare']
       }
     },
 
@@ -74,6 +72,6 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-force-task');
   grunt.loadNpmTasks('grunt-run');
 
-  grunt.registerTask('test', [ 'ts', 'run:test', 'prettier', 'tslint:src', 'tslint:test']);
+  grunt.registerTask('test', [ 'run:compile', 'run:test', 'prettier', 'tslint:src', 'tslint:test']);
   grunt.registerTask('default', ['force:test', 'watch']);
 };
