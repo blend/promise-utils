@@ -18,6 +18,14 @@ test('returns settled promise values in order when no errFn provided', async t =
   });
 });
 
+test('settles null value', async t => {
+  const res = await promiseUtils.settleAll(null as any);
+  t.deepEqual(res, {
+    errors: [],
+    results: [],
+  });
+});
+
 test('runs and returns result of errFn on failed promises', async t => {
   const testPromises: Promise<any>[] = [
     Promise.resolve('a'),
