@@ -25,6 +25,14 @@ test('filters arrays with indices', async t => {
   t.deepEqual(output, [2]);
 });
 
+test('filters objects with numeric keys', async t => {
+  const input = { 1: 'asdf', 2: 'abcd' };
+  const output = await promiseUtils.filter(input, async (value, i) => {
+    return (i as any) === 1 || (i as any) === 2;
+  });
+  t.deepEqual(output, []);
+});
+
 test('filters objects', async t => {
   const input = { a: 1, b: 2 };
   const output = await promiseUtils.filter(input, async (value: any) => {

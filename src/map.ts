@@ -1,19 +1,6 @@
 const DEFAULT_MAP_PARALLELISM = 10;
 
 /**
- * Converts numeric keys to actual numbers - `for in` will always provide string keys, even
- * for array indexes or numeric keys of objects
- */
-function asNumericKey(key: string): string | number {
-  // tslint:disable-next-line:no-any (isNaN for some reason is not typed to accept strings)
-  if (!isNaN(key as any)) {
-    return Number(key);
-  } else {
-    return key;
-  }
-}
-
-/**
  * Produces a new collection of values by mapping each value in coll through the iteratee
  * function. The iteratee is called with an item from coll and a callback for when it has finished
  * processing. Each of these callback takes 2 arguments: an error, and the transformed item from
@@ -86,8 +73,9 @@ export async function mapLimit<V>(input: any, limit: number, iteratee: any): Pro
     return [];
   }
 
+  const isArray = input.length !== undefined;
   const size = (() => {
-    if (input.length !== undefined) {
+    if (isArray) {
       return input.length;
     }
 
@@ -103,7 +91,7 @@ export async function mapLimit<V>(input: any, limit: number, iteratee: any): Pro
 
   let i = 0;
   for (const key in input) {
-    const possiblyNumericKey = asNumericKey(key);
+    const possiblyNumericKey = isArray ? i : key;
     allValues[size - 1 - i] = [input[key], i, possiblyNumericKey];
     ++i;
   }
