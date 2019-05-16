@@ -6,7 +6,7 @@ export interface SettledPromises<T, V> {
 /**
  * Attempts to settle all promises in promises in parallel, calling errFn when a promise rejects.
  * Similar to Promise.all, but does not fail fast. For resolved promises, the result array contains
- * resolved values in the same order as the promises. For rejected promises, the result array
+ * resolved values in the same order as the promises. For rejected promises, the error array
  * contains the return values of errFn in the same order as the promises.
  *
  * @param {Promise<T>[]} promises - An array of promises to attempt to settle.
