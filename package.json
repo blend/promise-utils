@@ -16,12 +16,12 @@
     "prepare": "npm run compile",
     "prettier:base": "prettier '{src,test}/**/**/*.ts'",
     "prettier": "npm run prettier:base -- --write",
-    "lintSrc": "tslint --project tsconfig.json --config tslint.js 'src/**/*.ts'",
-    "lintTest": "tslint --project tsconfig.json --config tslint.test.js 'test/**/*.ts'",
-    "lint": "npm run prettier:base -- --list-different && npm run lintSrc && npm run lintTest",
-    "lintFix": "npm run lintSrc --fix && npm run lintTest --fix",
-    "testCode": "nyc ava",
-    "test": "npm run compile && npm run lint && npm run testCode && ./bin/assert_no_file_modifications.sh"
+    "lint:src": "tslint --project tsconfig.json --config tslint.js 'src/**/*.ts'",
+    "lint:test": "tslint --project tsconfig.json --config tslint.test.js 'test/**/*.ts'",
+    "lint": "npm run prettier:base -- --list-different && npm run lint:src && npm run lint:test",
+    "lint:fix": "npm run lint:src --fix && npm run lint:test --fix",
+    "test:unit": "nyc ava",
+    "test": "npm run compile && npm run lint && npm run test:unit && ./bin/assert_no_file_modifications.sh"
   },
   "prettier": {
     "singleQuote": true,
@@ -69,7 +69,7 @@
     "grunt-ts": "6.0.0-beta.22",
     "lodash": "4.17.11",
     "nyc": "13.3.0",
-    "prettier": "^1.18.2",
+    "prettier": "1.18.2",
     "sinon": "7.2.4",
     "tslint": "5.12.1",
     "typedoc": "0.14.2",
