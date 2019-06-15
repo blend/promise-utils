@@ -19,8 +19,7 @@
     "lint": "npm run lintSrc && npm run lintTest",
     "lintFix": "npm run lintSrc --fix && npm run lintTest --fix",
     "testCode": "nyc ava",
-    "test": "tsc && npm run testCode && npm run lint && ./bin/assert_no_file_modifications.sh",
-    "start": "grunt"
+    "test": "tsc && npm run testCode && npm run lint && ./bin/assert_no_file_modifications.sh"
   },
   "prettier": {
     "singleQuote": true,
@@ -65,15 +64,10 @@
     "@types/sinon": "7.0.6",
     "ava": "1.2.1",
     "coveralls": "3.0.3",
-    "lodash": "4.17.11",
-    "grunt": "1.0.3",
-    "grunt-run": "0.8.1",
-    "grunt-contrib-watch": "1.1.0",
-    "grunt-force-task": "2.0.0",
-    "grunt-prettier": "1.1.1",
     "grunt-ts": "6.0.0-beta.22",
-    "grunt-tslint": "5.0.2",
+    "lodash": "4.17.11",
     "nyc": "13.3.0",
+    "prettier": "^1.18.2",
     "sinon": "7.2.4",
     "tslint": "5.12.1",
     "typedoc": "0.14.2",
