@@ -14,7 +14,7 @@
   "scripts": {
     "compile": "tsc",
     "prepare": "npm run compile",
-    "prettier:base": "prettier '{src,test}/**/**/*.ts'",
+    "prettier:base": "prettier '{src,test}/**/**/*.ts' --config .prettierrc",
     "prettier": "npm run prettier:base -- --write",
     "lint:src": "tslint --project tsconfig.json --config tslint.js 'src/**/*.ts'",
     "lint:test": "tslint --project tsconfig.json --config tslint.test.js 'test/**/*.ts'",
