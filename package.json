@@ -12,14 +12,16 @@
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",
   "scripts": {
-    "prepare": "tsc",
-    "pretty": "prettier --list-different '{src,test}/**/**/*.ts'",
+    "compile": "tsc",
+    "prepare": "npm run compile",
+    "prettier:base": "prettier '{src,test}/**/**/*.ts'",
+    "prettier": "npm run prettier:base -- --write",
     "lintSrc": "tslint --project tsconfig.json --config tslint.js 'src/**/*.ts'",
     "lintTest": "tslint --project tsconfig.json --config tslint.test.js 'test/**/*.ts'",
-    "lint": "npm run lintSrc && npm run lintTest",
+    "lint": "npm run prettier:base -- --list-different && npm run lintSrc && npm run lintTest",
     "lintFix": "npm run lintSrc --fix && npm run lintTest --fix",
     "testCode": "nyc ava",
-    "test": "tsc && npm run testCode && npm run lint && ./bin/assert_no_file_modifications.sh"
+    "test": "npm run compile && npm run lint && npm run testCode && ./bin/assert_no_file_modifications.sh"
   },
   "prettier": {
     "singleQuote": true,
