@@ -18,8 +18,9 @@
     "lintSrc": "tslint --project tsconfig.json --config tslint.js 'src/**/*.ts'",
     "lintTest": "tslint --project tsconfig.json --config tslint.test.js 'test/**/*.ts'",
     "lint": "npm run prettier:base -- --list-different && npm run lintSrc && npm run lintTest",
-    "lintFix": "npm run lintSrc --fix && npm run lintTest --fix",
+    "lintFix": "npm run lintSrc --fix && npm run lintTest --fix && npm run prettier",
     "testCode": "nyc ava",
+    "testFix": "tsc && npm run testCode && npm run lintFix",
     "test": "tsc && npm run testCode && npm run lint && ./bin/assert_no_file_modifications.sh",
     "start": "grunt"
   },

@@ -6,12 +6,11 @@ module.exports = function(grunt) {
   const ALL_TS_FILES = [...TS_SRC_FILES, ...TS_TEST_FILES];
   const ALL_FILES = [...ALL_TS_FILES, 'Gruntfile.js', 'package-lock.json', 'package.json', 'tsconfig.json', 'tslint.*'];
 
-  // Project configuration.
   grunt.initConfig({
     run: {
-      test: {
+      testFix: {
         cmd: 'npm',
-        args: ['run', 'test']
+        args: ['run', 'testFix']
       },
       compile: {
         cmd: 'npm',
@@ -34,6 +33,6 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-force-task');
   grunt.loadNpmTasks('grunt-run');
 
-  grunt.registerTask('test', ['run:test']);
+  grunt.registerTask('test', ['run:testFix']);
   grunt.registerTask('default', ['force:test', 'watch']);
 };
