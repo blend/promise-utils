@@ -20,7 +20,7 @@
     "lint": "npm run prettier:base -- --list-different && npm run lintSrc && npm run lintTest",
     "lintFix": "npm run lintSrc --fix && npm run lintTest --fix",
     "testCode": "nyc ava",
-    "test": "tsc && npm run lint && npm run testCode && ./bin/assert_no_file_modifications.sh",
+    "test": "tsc && npm run testCode && npm run lint && ./bin/assert_no_file_modifications.sh",
     "start": "grunt"
   },
   "prettier": {
