@@ -10,18 +10,6 @@ module.exports = function(grunt) {
 
   // Project configuration.
   grunt.initConfig({
-
-    prettier: {
-      options: {
-        singleQuote: true,
-        trailingComma: 'all',
-        printWidth: 100,
-      },
-      files: {
-        src: ALL_TS_FILES,
-      }
-    },
-
     run: {
       test: {
         cmd: 'npm',
