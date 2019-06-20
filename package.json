@@ -1,6 +1,6 @@
 {
   "name": "blend-promise-utils",
-  "version": "1.22.2",
+  "version": "1.22.3",
   "author": "Blend",
   "license": "MIT",
   "homepage": "https://blend.github.io/promise-utils",
@@ -18,9 +18,10 @@
     "lintSrc": "tslint --project tsconfig.json --config tslint.js 'src/**/*.ts'",
     "lintTest": "tslint --project tsconfig.json --config tslint.test.js 'test/**/*.ts'",
     "lint": "npm run prettier:base -- --list-different && npm run lintSrc && npm run lintTest",
-    "lintFix": "npm run lintSrc --fix && npm run lintTest --fix",
+    "lintFix": "npm run lintSrc -- --fix && npm run lintTest -- --fix && npm run prettier",
     "testCode": "nyc ava",
     "test": "tsc && npm run testCode && npm run lint && ./bin/assert_no_file_modifications.sh",
+    "testFix": "tsc && npm run testCode && npm run lintFix",
     "start": "grunt"
   },
   "prettier": {
@@ -70,8 +71,6 @@
     "grunt-contrib-watch": "1.1.0",
     "grunt-force-task": "2.0.0",
     "grunt-run": "0.8.1",
-    "grunt-ts": "6.0.0-beta.22",
-    "grunt-tslint": "5.0.2",
     "lodash": "4.17.11",
     "nyc": "13.3.0",
     "prettier": "1.18.2",
