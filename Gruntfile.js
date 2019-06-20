@@ -8,18 +8,6 @@ module.exports = function(grunt) {
 
   // Project configuration.
   grunt.initConfig({
-
-    prettier: {
-      options: {
-        singleQuote: true,
-        trailingComma: 'all',
-        printWidth: 100,
-      },
-      files: {
-        src: ALL_TS_FILES,
-      }
-    },
-
     run: {
       test: {
         cmd: 'npm',
@@ -43,10 +31,19 @@ module.exports = function(grunt) {
   });
 
   grunt.loadNpmTasks('grunt-contrib-watch');
+<<<<<<< HEAD
   grunt.loadNpmTasks('grunt-prettier');
   grunt.loadNpmTasks('grunt-force-task');
   grunt.loadNpmTasks('grunt-run');
 
   grunt.registerTask('test', ['run:test']);
+=======
+  grunt.loadNpmTasks('grunt-ts');
+  grunt.loadNpmTasks('grunt-tslint');
+  grunt.loadNpmTasks('grunt-force-task');
+  grunt.loadNpmTasks('grunt-run');
+
+  grunt.registerTask('test', [ 'run:compile', 'run:test', 'tslint:src', 'tslint:test']);
+>>>>>>> origin/master
   grunt.registerTask('default', ['force:test', 'watch']);
 };
