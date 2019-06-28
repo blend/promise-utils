@@ -14,6 +14,12 @@ test('runs with indices', async t => {
   t.deepEqual(output, _.map(_.range(10), n => n * n));
 });
 
+test('infers types on tuples', async t => {
+  const val = [1, 2, 3, 4] as const;
+  const output = await promiseUtils.map(val, async (n, i) => i * i);
+  t.deepEqual(output, _.map(_.range(4), n => n * n));
+});
+
 test('works for objects', async t => {
   const input = { a: 1, b: 2, c: 3, d: 4 };
   const output = await promiseUtils.map(input, async (a, b) => [b, a]);

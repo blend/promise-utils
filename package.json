@@ -18,7 +18,7 @@
     "lintSrc": "tslint --project tsconfig.json --config tslint.js 'src/**/*.ts'",
     "lintTest": "tslint --project tsconfig.json --config tslint.test.js 'test/**/*.ts'",
     "lint": "npm run prettier:base -- --list-different && npm run lintSrc && npm run lintTest",
-    "lintFix": "npm run lintSrc -- --fix && npm run lintTest -- --fix && npm run prettier",
+    "lintFix": "npm run prettier && npm run lintSrc -- --fix && npm run lintTest -- --fix",
     "testCode": "nyc ava",
     "test": "tsc && npm run testCode && npm run lint && ./bin/assert_no_file_modifications.sh",
     "testFix": "tsc && npm run testCode && npm run lintFix",
@@ -77,6 +77,6 @@
     "sinon": "7.2.4",
     "tslint": "5.12.1",
     "typedoc": "0.14.2",
-    "typescript": "3.3.3"
+    "typescript": "3.5.2"
   }
 }
