@@ -102,6 +102,15 @@ test('reset resets a memo', async t => {
   t.is(cacheCount4, 100);
 });
 
+test('reset ignores things not memoized', async t => {
+  const fnToMemoize = sandbox.stub();
+  const memoized = promiseUtils.memoize(fnToMemoize);
+
+  // should not throw
+  memoized.reset(1);
+  t.pass();
+});
+
 test('clear resets all memos', async t => {
   const fnToMemoize = sandbox
     .stub()
