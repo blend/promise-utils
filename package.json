@@ -18,7 +18,7 @@
     "lintSrc": "tslint --project tsconfig.json --config tslint.js 'src/**/*.ts'",
     "lintTest": "tslint --project tsconfig.json --config tslint.test.js 'test/**/*.ts'",
     "lint": "npm run prettier:base -- --list-different && npm run lintSrc && npm run lintTest",
-    "lintFix": "npm run lintSrc -- --fix && npm run lintTest -- --fix && npm run prettier",
+    "lintFix": "npm run prettier && npm run lintSrc -- --fix && npm run lintTest -- --fix",
     "testCode": "nyc ava",
     "test": "tsc && npm run testCode && npm run lint && ./bin/assert_no_file_modifications.sh",
     "testFix": "tsc && npm run testCode && npm run lintFix",
@@ -53,6 +53,10 @@
     "require": [
       "source-map-support/register"
     ],
+    "extension": [
+      ".ts"
+    ],
+    "skip-full": true,
     "check-coverage": true,
     "lines": 100,
     "functions": 100,
@@ -63,20 +67,20 @@
     ]
   },
   "devDependencies": {
-    "@types/lodash": "4.14.121",
-    "@types/sinon": "7.0.6",
-    "ava": "1.2.1",
-    "coveralls": "3.0.3",
-    "grunt": "1.0.3",
+    "@types/lodash": "4.14.135",
+    "@types/sinon": "7.0.13",
+    "ava": "2.1.0",
+    "coveralls": "3.0.4",
+    "grunt": "1.0.4",
     "grunt-contrib-watch": "1.1.0",
     "grunt-force-task": "2.0.0",
     "grunt-run": "0.8.1",
     "lodash": "4.17.11",
-    "nyc": "13.3.0",
+    "nyc": "14.1.1",
     "prettier": "1.18.2",
-    "sinon": "7.2.4",
-    "tslint": "5.12.1",
+    "sinon": "7.3.2",
+    "tslint": "5.18.0",
     "typedoc": "0.14.2",
-    "typescript": "3.3.3"
+    "typescript": "3.5.2"
   }
 }

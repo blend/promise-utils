@@ -11,7 +11,7 @@ jobs:
       - run: npm ci
       - run: npm test
       - run: ./node_modules/coveralls/bin/coveralls.js < coverage/lcov.info
-      - run: make docs
+      # - run: make docs # this is broken on https://github.com/TypeStrong/typedoc/pull/1014
 
       - store_artifacts:
           path: coverage

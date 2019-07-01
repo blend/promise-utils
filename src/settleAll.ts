@@ -15,7 +15,7 @@ export interface SettledPromises<T, V> {
  * @returns A list of resolved and rejected values of promises.
  */
 export async function settleAll<T, V>(
-  promises: Promise<T>[],
+  promises: readonly Promise<T>[],
   // tslint:disable-next-line:no-any (no way to guarantee error typings)
   errFn: (err: any) => V = err => err,
 ): Promise<SettledPromises<T, V>> {

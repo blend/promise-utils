@@ -21,10 +21,13 @@ const DEFAULT_MAP_PARALLELISM = 10;
  *     should return the transformed item. Invoked with (item, key).
  */
 export async function map<T, V>(
-  input: T[],
+  input: readonly T[],
   iteratee: (value: T, index: number) => Promise<V>,
 ): Promise<V[]>;
-export async function map<T, V>(input: T[], iteratee: (value: T) => Promise<V>): Promise<V[]>;
+export async function map<T, V>(
+  input: readonly T[],
+  iteratee: (value: T) => Promise<V>,
+): Promise<V[]>;
 export async function map<T extends Object, V>(
   input: T,
   iteratee: (value: T[keyof T], key: string) => Promise<V>,
@@ -48,12 +51,12 @@ export async function map(input: any, iteratee: any): Promise<any[]> {
  *     should complete with the transformed item. Invoked with (item, key).
  */
 export async function mapLimit<T, V>(
-  input: T[],
+  input: readonly T[],
   limit: number,
   iteratee: (value: T, index: number) => Promise<V>,
 ): Promise<V[]>;
 export async function mapLimit<T, V>(
-  input: T[],
+  input: readonly T[],
   limit: number,
   iteratee: (value: T) => Promise<V>,
 ): Promise<V[]>;
@@ -122,10 +125,13 @@ export async function mapLimit<V>(input: any, limit: number, iteratee: any): Pro
  *     should complete with the transformed item. Invoked with (item, key).
  */
 export async function mapSeries<T, V>(
-  input: T[],
+  input: readonly T[],
   iteratee: (value: T, index: number) => Promise<V>,
 ): Promise<V[]>;
-export async function mapSeries<T, V>(input: T[], iteratee: (value: T) => Promise<V>): Promise<V[]>;
+export async function mapSeries<T, V>(
+  input: readonly T[],
+  iteratee: (value: T) => Promise<V>,
+): Promise<V[]>;
 export async function mapSeries<T extends Object, V>(
   input: T,
   iteratee: (value: T[keyof T], key: string) => Promise<V>,
@@ -147,11 +153,11 @@ export async function mapSeries(input: any, iteratee: any): Promise<any[]> {
  *     should complete with the transformed item. Invoked with (item, key).
  */
 export async function flatMap<T, V>(
-  input: T[],
+  input: readonly T[],
   iteratee: (value: T, index: number) => Promise<V | V[]>,
 ): Promise<V[]>;
 export async function flatMap<T, V>(
-  input: T[],
+  input: readonly T[],
   iteratee: (value: T) => Promise<V | V[]>,
 ): Promise<V[]>;
 export async function flatMap<T extends Object, V>(

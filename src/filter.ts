@@ -10,10 +10,13 @@ import { map } from './map';
  * @returns The filtered collection
  */
 export async function filter<T, V>(
-  input: T[],
+  input: readonly T[],
   predicate: (value: T, index: number) => Promise<V>,
 ): Promise<T[]>;
-export async function filter<T, V>(input: T[], predicate: (value: T) => Promise<V>): Promise<T[]>;
+export async function filter<T, V>(
+  input: readonly T[],
+  predicate: (value: T) => Promise<V>,
+): Promise<T[]>;
 export async function filter<T extends Object, V>(
   input: T,
   predicate: (value: T[keyof T], key: keyof T) => Promise<V>,
