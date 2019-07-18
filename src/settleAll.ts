@@ -9,7 +9,8 @@ export interface SettledPromises<T, V> {
  * contains the return values of errFn in the same order as the promises.
  *
  * @param {Promise<T>[]} promises - An array of promises to attempt to settle.
- * @param {Function} errFn - The function to call when a promise rejects. Accepts an error and optionally the index of the promise that caused that error.
+ * @param {Function} errFn - The function to call when a promise rejects.
+ *     Accepts an error and optionally the index of the promise that caused that error.
  *
  * @returns A list of resolved and rejected values of promises.
  */
