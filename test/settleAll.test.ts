@@ -41,6 +41,20 @@ test('runs and returns result of errFn on failed promises', async t => {
   });
 });
 
+test('allows errFn to take an index', async t => {
+  const testPromises: Promise<any>[] = [
+    Promise.reject(new Error('errorA')),
+    Promise.reject(new Error('errorB')),
+    Promise.reject(new Error('errorC')),
+  ];
+  const errFn = (err: Error, ind: number) => `${ind}-${err.message}`;
+  const res = await promiseUtils.settleAll(testPromises, errFn);
+  t.deepEqual(res, {
+    errors: ['0-errorA', '1-errorB', '2-errorC'],
+    results: [],
+  });
+});
+
 test('handles empty promise array', async t => {
   const res = await promiseUtils.settleAll([]);
   t.deepEqual(res, {
