@@ -61,7 +61,7 @@ test('allows errFn to take async functions', async t => {
     Promise.reject(new Error('errorB')),
     Promise.reject(new Error('errorC')),
   ];
-  const errFn = async (err: Error) => `async-${err}`;
+  const errFn = async (err: Error) => `async-${err.message}`;
   const res = await promiseUtils.settleAll(testPromises, errFn);
   t.deepEqual(res, {
     errors: ['async-errorA', 'async-errorB', 'async-errorC'],
