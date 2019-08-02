@@ -17,6 +17,16 @@ export interface SettledPromises<T, V> {
 export async function settleAll<T, V>(
   promises: readonly Promise<T>[],
   // tslint:disable-next-line:no-any (no way to guarantee error typings)
+  errFn?: (err: any, ind: number) => Promise<V>,
+): Promise<SettledPromises<T, V>>;
+export async function settleAll<T, V>(
+  promises: readonly Promise<T>[],
+  // tslint:disable-next-line:no-any (no way to guarantee error typings)
+  errFn?: (err: any) => Promise<V>,
+): Promise<SettledPromises<T, V>>;
+export async function settleAll<T, V>(
+  promises: readonly Promise<T>[],
+  // tslint:disable-next-line:no-any (no way to guarantee error typings)
   errFn?: (err: any, ind: number) => V,
 ): Promise<SettledPromises<T, V>>;
 export async function settleAll<T, V>(
@@ -34,7 +44,7 @@ export async function settleAll<T, V>(
       try {
         return { results: await p };
       } catch (err) {
-        return { errors: errFn(err, i) };
+        return { errors: await errFn(err, i) };
       }
     }),
   );
