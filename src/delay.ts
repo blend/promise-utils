@@ -27,5 +27,8 @@ export async function immediate<T>(value: T): Promise<T>;
 export async function immediate<T>(): Promise<void>;
 // tslint:disable-next-line:no-any typedef (typed by overload signatures)
 export async function immediate(value?: any) {
-  return delay(0, value);
+  return new Promise(
+    // tslint:disable-next-line:no-any (typed by overload signatures)
+    resolve => setImmediate(() => resolve(value)),
+  );
 }
