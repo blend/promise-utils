@@ -10,9 +10,9 @@ export interface RetryOpts extends BaseRetryOpts {
 }
 
 /**
- * Attempts to get a successful response from task no more than maxAttempts times before returning an
- * error. If the task is successful, the return will be the result of the successful
- * task. If all attempts fail, it will throw the error of the final attempt.
+ * Attempts to get a successful response from task no more than maxAttempts times before
+ * returning an error. If the task is successful, the return will be the result of the
+ * successful task. If all attempts fail, it will throw the error of the final attempt.
  *
  * @param {AsyncFunction} fn - An async function to retry.
  * @param {RetryOpts} opts
