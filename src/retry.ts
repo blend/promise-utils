@@ -10,9 +10,9 @@ export interface RetryOpts extends BaseRetryOpts {
 }
 
 /**
- * Attempts to get a successful response from task no more than times times before returning an
- * error. If the task is successful, the return will be the result of the successful
- * task. If all attempts fail, it will throw the error of the final attempt.
+ * Attempts to get a successful response from task no more than maxAttempts times before
+ * returning an error. If the task is successful, the return will be the result of the
+ * successful task. If all attempts fail, it will throw the error of the final attempt.
  *
  * @param {AsyncFunction} fn - An async function to retry.
  * @param {RetryOpts} opts
@@ -49,12 +49,12 @@ export function retry<T extends Function>(fn: T, retryOpts: RetryOpts): T {
 }
 
 /**
- * Attempts to get a truthy response from task no more than maxAttempts times times before
+ * Attempts to get a truthy response from task no more than maxAttempts times before
  * throwing an error. If the task is successful, it will return the result of the
- * successful task. If all attempts fail, It will throw an error indicating as such.
+ * successful task. If all attempts fail, it will throw an error indicating as such.
  *
  * @param {AsyncFunction} fn - An async function to retry.
- * @param {RetryOpts} opts
+ * @param {BaseRetryOpts} opts
  *     - maxAttempts - The number of attempts to make before giving up.
  *     - delayMs - The time to wait between retries, in milliseconds. The default is 0.
  * @returns A wrapped version of fn that performs retries on falsey results
