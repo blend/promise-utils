@@ -1,11 +1,17 @@
 /**
- * Caches the results of an async function. When creating a hash to store function results against,
- * the callback is omitted from the hash and an optional hash function can be used.
+ * Caches the results of an async function. It takes a synchronous hasher that uses the input to
+ * the function to determine when to return a memoized result.
  *
  * If no hash function is specified, the first argument is used as a hash key, which may work
  * reasonably if it is a string or a data type that converts to a distinct string. Note that objects
  * and arrays will not behave reasonably. Neither will cases where the other arguments are
  * significant. In such cases, specify your own hash function.
+ *
+ * WARNING: This function uses memory for each unique hasher output and does not clean it up, even
+ * after the timeout has passed. If you have many unique values that could hash and they shift over
+ * time, you will need to manage the memory of the map. The return of this function does expose
+ * memory management operations; if this sounds like your use case, setInterval(memoizedFn.clear,
+ * timeoutMs) is a good starting point.
  *
  * @param {AsyncFunction} fn - The async function to proxy and cache results from.
  * @param {Function} hasher - An optional function for generating a custom hash for storing

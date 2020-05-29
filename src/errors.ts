@@ -5,6 +5,9 @@
  * @param {Function} fn - An async function to wrap
  * @param {Function} errorHandler
  *     - a function that will process any errors produced by the original function
+ *     Note that this can be used to either return something that isn't an error (for expected
+ *     errors) to add additional context to an error and throw that error, or even just to create
+ *     side effects for error throwing (e.g. logging)
  * @returns A wrapped version of function that uses error handler
  */
 export function transformErrors<T extends Function>(fn: T, errorHandler: Function): T {

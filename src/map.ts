@@ -1,17 +1,14 @@
 const DEFAULT_MAP_PARALLELISM = 10;
 
 /**
- * Produces a new collection of values by mapping each value in coll through the iteratee
- * function. The iteratee is called with an item from coll and a callback for when it has finished
- * processing. Each of these callback takes 2 arguments: an error, and the transformed item from
- * coll. If iteratee passes an error to its callback, the main callback (for the map function) is
- * immediately called with the error.
+ * Produces a new collection of values by mapping each value in coll through the async iteratee
+ * function. The iteratee is called with an item from coll and they key (or index) of that item.
  *
  * Note, that since this function applies the iteratee to each item in parallel, there is no
  * guarantee that the iteratee functions will complete in order. However, the results array will be
  * in the same order as the original coll.
  *
- * Note also - because of how the iteratee is applied, there is a slight possibility that if your
+ * WARNING: because of how the iteratee is applied, there is a possibility that if your
  * input is an array of promises, they could be settled before the iteratee is applied - if they
  * reject in this scenario, it would result in an unhandledRejection. As such, you should use
  * settleAll to deal with arrays of promises, which will avoid this scenario.

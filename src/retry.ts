@@ -1,16 +1,18 @@
 import { delay } from './delay';
 
-export interface RetryOpts {
+export interface BaseRetryOpts {
   maxAttempts: number;
-  isRetryable?: (err: Error) => boolean;
   delayMs?: number;
+}
+
+export interface RetryOpts extends BaseRetryOpts {
+  isRetryable?: (err: Error) => boolean;
 }
 
 /**
  * Attempts to get a successful response from task no more than times times before returning an
- * error. If the task is successful, the callback will be passed the result of the successful
- * task. If all attempts fail, the callback will be passed the error and result (if any) of the
- * final attempt.
+ * error. If the task is successful, the return will be the result of the successful
+ * task. If all attempts fail, it will throw the error of the final attempt.
  *
  * @param {AsyncFunction} fn - An async function to retry.
  * @param {RetryOpts} opts
@@ -25,7 +27,9 @@ export interface RetryOpts {
 export function retry<T extends Function>(fn: T, retryOpts: RetryOpts): T {
   // tslint:disable-next-line:no-any (casting as any to preserve original function type)
   return ((async (...args: any[]): Promise<any> => {
-    let lastErr: Error = new Error(`Could not complete function within ${retryOpts.maxAttempts}`);
+    let lastErr: Error = new Error(
+      `Could not complete function within ${retryOpts.maxAttempts} attempts`,
+    );
     for (let i = 0; i < retryOpts.maxAttempts; ++i) {
       try {
         return await fn(...args);
@@ -42,4 +46,34 @@ export function retry<T extends Function>(fn: T, retryOpts: RetryOpts): T {
     throw lastErr;
     // tslint:disable-next-line:no-any (casting as any to preserve original function type)
   }) as any) as T;
+}
+
+/**
+ * Attempts to get a truthy response from task no more than maxAttempts times times before
+ * throwing an error. If the task is successful, it will return the result of the
+ * successful task. If all attempts fail, It will throw an error indicating as such.
+ *
+ * @param {AsyncFunction} fn - An async function to retry.
+ * @param {RetryOpts} opts
+ *     - maxAttempts - The number of attempts to make before giving up.
+ *     - delayMs - The time to wait between retries, in milliseconds. The default is 0.
+ * @returns A wrapped version of fn that performs retries on falsey results
+ */
+export function until<
+  // tslint:disable-next-line:no-any (need to support arbitrary args)
+  T extends (...args: any[]) => Promise<any>
+>(fn: T, retryOpts: BaseRetryOpts): T {
+  // tslint:disable-next-line:no-any (need to support arbitrary args)
+  return (async (...args: any[]): Promise<any> => {
+    for (let i = 0; i < retryOpts.maxAttempts; ++i) {
+      const result = await fn(...args);
+      if (!!result) {
+        return result;
+      }
+      if (retryOpts.delayMs) {
+        await delay(retryOpts.delayMs);
+      }
+    }
+    throw new Error(`Could not complete function within ${retryOpts.maxAttempts} attempts`);
+  }) as T;
 }

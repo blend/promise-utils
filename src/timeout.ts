@@ -1,6 +1,11 @@
 /**
- * Sets a time limit on an asynchronous function. If the function does return callback within
- * the specified milliseconds, it will be called with a timeout error.
+ * Sets a time limit on an asynchronous function. If the function does return within
+ * the specified milliseconds, it will throw a timeout error.
+ *
+ * WARNING: due to limitations of node, this does not actually abort the pending promise. If you
+ * need to prevent continuation of the operations within the function, you need to essentially
+ * create progress checkers that determine whether the function should terminate if sufficient time
+ * has passed.
  *
  * @param {AsyncFunction} fn - The async function to limit in time.
  * @param {number} expirationTime - The specified time limit.
