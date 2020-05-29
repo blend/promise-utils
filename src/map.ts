@@ -2,7 +2,7 @@ const DEFAULT_MAP_PARALLELISM = 10;
 
 /**
  * Produces a new collection of values by mapping each value in coll through the async iteratee
- * function. The iteratee is called with an item from coll and they key (or index) of that item.
+ * function. The iteratee is called with an item from coll and the key (or index) of that item.
  *
  * Note, that since this function applies the iteratee to each item in parallel, there is no
  * guarantee that the iteratee functions will complete in order. However, the results array will be
