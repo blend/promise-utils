@@ -10,7 +10,7 @@
 export async function invert(promise: Promise<any>, message?: string): Promise<any> {
   message = message || 'Expected promise to reject';
   return promise.then(
-    res => {
+    () => {
       throw new Error(message);
     },
     err => err,
