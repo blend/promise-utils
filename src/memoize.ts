@@ -18,10 +18,11 @@
  *     results. It has all the arguments applied to it and must be synchronous.
  * @returns a memoized version of fn
  */
-export function memoize<FnType extends Function>(
+// tslint:disable:no-any defining it this way is more precise than Function so is still preferable
+export function memoize<FnType extends (...args: any[]) => Promise<any>>(
   fn: FnType,
-  // tslint:disable-next-line:no-any (w/o type for Function args, can't assert a type here)
-  hasher: Function = (arg: any) => arg,
+  // tslint:disable:no-any hasher can return any value that can be used as a map key
+  hasher: (...args: Parameters<FnType>) => any = (...args) => args[0],
   timeoutMs?: number,
 ): FnType & { reset: FnType; clear: () => void } {
   // tslint:disable:no-any (unfortunately we can't give the FnType any more clarity or it limits
@@ -29,7 +30,7 @@ export function memoize<FnType extends Function>(
   const memos: Map<any, { value: any; expiration: number }> = new Map();
   const queues: Map<any, Promise<any>> = new Map();
 
-  const returnFn = ((async (...args: any[]): Promise<any> => {
+  const returnFn = ((async (...args: Parameters<FnType>): Promise<any> => {
     const key: any = hasher(...args);
     if (memos.has(key)) {
       if (!timeoutMs || Date.now() < memos.get(key)!.expiration) {
@@ -53,7 +54,7 @@ export function memoize<FnType extends Function>(
     }
   }) as any) as FnType;
 
-  const reset = (...args: any[]): void => {
+  const reset = (...args: Parameters<FnType>): void => {
     const key = hasher(...args);
     if (memos.has(key)) {
       memos.delete(key);
