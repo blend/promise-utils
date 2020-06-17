@@ -1,3 +1,9 @@
+type ThenReturn<T> = T extends Promise<infer U>
+  ? U
+  : T extends ((...args: any[]) => Promise<infer V>)
+  ? V
+  : T;
+
 /**
  * Caches the results of an async function. It takes a synchronous hasher that uses the input to
  * the function to determine when to return a memoized result.
@@ -24,13 +30,14 @@ export function memoize<FnType extends (...args: any[]) => Promise<any>>(
   // tslint:disable:no-any hasher can return any value that can be used as a map key
   hasher: (...args: Parameters<FnType>) => any = (...args) => args[0],
   timeoutMs?: number,
-): FnType & { reset: FnType; clear: () => void } {
-  // tslint:disable:no-any (unfortunately we can't give the FnType any more clarity or it limits
-  // what you can do with it)
-  const memos: Map<any, { value: any; expiration: number }> = new Map();
-  const queues: Map<any, Promise<any>> = new Map();
+): FnType & { reset: (...args: Parameters<FnType>) => void; clear: () => void } {
+  const memos: Map<
+    ReturnType<typeof hasher>,
+    { value: ThenReturn<FnType>; expiration: number }
+  > = new Map();
+  const queues: Map<ReturnType<typeof hasher>, Promise<ThenReturn<FnType>>> = new Map();
 
-  const returnFn = ((async (...args: Parameters<FnType>): Promise<any> => {
+  const returnFn = async (...args: Parameters<FnType>): Promise<ThenReturn<FnType>> => {
     const key = hasher(...args);
     if (memos.has(key)) {
       if (!timeoutMs || Date.now() < memos.get(key)!.expiration) {
@@ -52,7 +59,7 @@ export function memoize<FnType extends (...args: any[]) => Promise<any>>(
     } finally {
       queues.delete(key);
     }
-  }) as any) as FnType;
+  };
 
   const reset = (...args: Parameters<FnType>): void => {
     const key = hasher(...args);
