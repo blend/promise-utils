@@ -31,7 +31,7 @@ export function memoize<FnType extends (...args: any[]) => Promise<any>>(
   const queues: Map<any, Promise<any>> = new Map();
 
   const returnFn = ((async (...args: Parameters<FnType>): Promise<any> => {
-    const key: any = hasher(...args);
+    const key = hasher(...args);
     if (memos.has(key)) {
       if (!timeoutMs || Date.now() < memos.get(key)!.expiration) {
         return memos.get(key)!.value;
@@ -42,11 +42,11 @@ export function memoize<FnType extends (...args: any[]) => Promise<any>>(
       return await queues.get(key)!;
     }
 
-    const promise: Promise<any> = fn(...args);
+    const promise = fn(...args);
     queues.set(key, promise);
 
     try {
-      const ret: any = await queues.get(key)!;
+      const ret = await queues.get(key)!;
       memos.set(key, { value: ret, expiration: Date.now() + (timeoutMs || 0) });
       return ret;
     } finally {
