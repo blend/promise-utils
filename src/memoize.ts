@@ -1,5 +1,5 @@
 type ThenReturn<T> = T extends Promise<infer U>
-  ? U
+  ? U // tslint:disable:no-any
   : T extends ((...args: any[]) => Promise<infer V>)
   ? V
   : T;
