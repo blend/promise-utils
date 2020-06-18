@@ -1,3 +1,9 @@
+type ThenReturn<T> = T extends Promise<infer U>
+  ? U // tslint:disable:no-any
+  : T extends ((...args: any[]) => Promise<infer V>)
+  ? V
+  : T;
+
 /**
  * Caches the results of an async function. It takes a synchronous hasher that uses the input to
  * the function to determine when to return a memoized result.
@@ -18,19 +24,21 @@
  *     results. It has all the arguments applied to it and must be synchronous.
  * @returns a memoized version of fn
  */
-export function memoize<FnType extends Function>(
+// tslint:disable:no-any defining it this way is more precise than Function so is still preferable
+export function memoize<FnType extends (...args: any[]) => Promise<any>>(
   fn: FnType,
-  // tslint:disable-next-line:no-any (w/o type for Function args, can't assert a type here)
-  hasher: Function = (arg: any) => arg,
+  // tslint:disable:no-any hasher can return any value that can be used as a map key
+  hasher: (...args: Parameters<FnType>) => any = (...args) => args[0],
   timeoutMs?: number,
-): FnType & { reset: FnType; clear: () => void } {
-  // tslint:disable:no-any (unfortunately we can't give the FnType any more clarity or it limits
-  // what you can do with it)
-  const memos: Map<any, { value: any; expiration: number }> = new Map();
-  const queues: Map<any, Promise<any>> = new Map();
+): FnType & { reset: (...args: Parameters<FnType>) => void; clear: () => void } {
+  const memos: Map<
+    ReturnType<typeof hasher>,
+    { value: ThenReturn<FnType>; expiration: number }
+  > = new Map();
+  const queues: Map<ReturnType<typeof hasher>, Promise<ThenReturn<FnType>>> = new Map();
 
-  const returnFn = ((async (...args: any[]): Promise<any> => {
-    const key: any = hasher(...args);
+  const returnFn = async (...args: Parameters<FnType>): Promise<ThenReturn<FnType>> => {
+    const key = hasher(...args);
     if (memos.has(key)) {
       if (!timeoutMs || Date.now() < memos.get(key)!.expiration) {
         return memos.get(key)!.value;
@@ -41,19 +49,19 @@ export function memoize<FnType extends Function>(
       return await queues.get(key)!;
     }
 
-    const promise: Promise<any> = fn(...args);
+    const promise = fn(...args);
     queues.set(key, promise);
 
     try {
-      const ret: any = await queues.get(key)!;
+      const ret = await queues.get(key)!;
       memos.set(key, { value: ret, expiration: Date.now() + (timeoutMs || 0) });
       return ret;
     } finally {
       queues.delete(key);
     }
-  }) as any) as FnType;
+  };
 
-  const reset = (...args: any[]): void => {
+  const reset = (...args: Parameters<FnType>): void => {
     const key = hasher(...args);
     if (memos.has(key)) {
       memos.delete(key);

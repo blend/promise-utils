@@ -40,7 +40,7 @@ test('typescript def works for multiple args', async t => {
     return false;
   }
 
-  const memoized = promiseUtils.memoize(stuffToMemoize);
+  const memoized = promiseUtils.memoize(stuffToMemoize, (a: string) => a);
 
   const ret = await promiseUtils.map(_.range(100), async val => memoized(`${val}`, 1));
   const cacheCount = _.filter(ret).length;
