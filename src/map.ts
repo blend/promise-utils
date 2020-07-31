@@ -73,7 +73,7 @@ export async function mapLimit<V>(input: any, limit: number, iteratee: any): Pro
     return [];
   }
 
-  const isArray = input instanceof Array;
+  const isArray = Array.isArray(input);
   const size = (() => {
     if (isArray) {
       return input.length;
