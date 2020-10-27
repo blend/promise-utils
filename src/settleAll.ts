@@ -1,3 +1,5 @@
+import { map } from './map';
+
 export interface SettledPromises<T, V> {
   errors: V[];
   results: T[];
@@ -39,14 +41,15 @@ export async function settleAll<T, V>(
   // tslint:disable-next-line:no-any (no way to guarantee error typings)
   errFn: (err: any, ind: number) => V = err => err,
 ): Promise<SettledPromises<T, V>> {
-  const intermediateResults: { errors?: V; results?: T }[] = await Promise.all(
-    (promises || []).map(async (p, i) => {
+  const intermediateResults: { errors?: V; results?: T }[] = await map(
+    promises || [],
+    async (p, i) => {
       try {
         return { results: await p };
       } catch (err) {
         return { errors: await errFn(err, i) };
       }
-    }),
+    },
   );
   const settledPromises: SettledPromises<T, V> = { results: [], errors: [] };
   for (const result of intermediateResults) {
