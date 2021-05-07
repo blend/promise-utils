@@ -5,5 +5,6 @@ export * from './map';
 export * from './errors';
 export * from './retry';
 export * from './settleAll';
+export * from './all';
 export * from './timeout';
 export * from './memoize';
