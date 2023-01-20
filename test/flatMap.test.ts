@@ -39,3 +39,8 @@ test('handles empty input group', async t => {
   const output = await promiseUtils.flatMap([], _.identity);
   t.deepEqual(output, []);
 });
+
+test('handles large sub-lists', async t => {
+  const output = await promiseUtils.flatMap(_.range(10), async () => _.range(1_000_000));
+  t.is(output.length, 10_000_000);
+});
