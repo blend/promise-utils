@@ -7,16 +7,22 @@ import * as promiseUtils from '../src/index';
 
 const sandbox = sinon.createSandbox();
 
-test('fails eventually', async t => {
+test.afterEach(() => sandbox.restore());
+
+test.serial('fails eventually', async t => {
+  const maxAttempts = 3;
+  const delayStub = sandbox.stub(delay, 'delay');
+
   await t.throwsAsync(
     promiseUtils.retry(
       () => {
         throw new Error('testing failures');
       },
-      { maxAttempts: 3 },
+      { maxAttempts, delayMs: 100 },
     ),
     /testing failure/,
   );
+  t.is(delayStub.callCount, maxAttempts - 1);
 });
 
 test('honors immediate failure scenarios', async t => {

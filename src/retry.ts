@@ -39,7 +39,7 @@ export function retry<T extends Function>(fn: T, retryOpts: RetryOpts): T {
         }
         lastErr = err;
       }
-      if (retryOpts.delayMs) {
+      if (retryOpts.delayMs && i < retryOpts.maxAttempts - 1) {
         await delay(retryOpts.delayMs);
       }
     }
