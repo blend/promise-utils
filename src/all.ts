@@ -18,8 +18,9 @@ export async function all<T>(promises: readonly Promise<T>[]): Promise<T[]> {
   if (intermediateResults.errors && intermediateResults.errors.length > 0) {
     const primaryError = intermediateResults.errors[0];
     if (intermediateResults.errors.length > 1 && primaryError instanceof Error) {
-      primaryError.message = `${primaryError.message}... and ${intermediateResults.errors.length -
-        1} other errors`;
+      primaryError.message = `${primaryError.message}... and ${
+        intermediateResults.errors.length - 1
+      } other errors`;
       // tslint:disable-next-line:no-any (intentionally augmenting error)
       (primaryError as any).otherErrors = intermediateResults.errors.slice(1);
     }

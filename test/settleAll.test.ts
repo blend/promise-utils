@@ -2,7 +2,7 @@ import test from 'ava';
 
 import * as promiseUtils from '../src/index';
 
-test('returns settled promise values in order when no errFn provided', async t => {
+test('returns settled promise values in order when no errFn provided', async (t) => {
   const testPromises: Promise<any>[] = [
     promiseUtils.invert(promiseUtils.delay(500, null), 'delayed error'),
     promiseUtils.delay(500, { success: true }),
@@ -18,7 +18,7 @@ test('returns settled promise values in order when no errFn provided', async t =
   });
 });
 
-test('settles null value', async t => {
+test('settles null value', async (t) => {
   const res = await promiseUtils.settleAll(null as any);
   t.deepEqual(res, {
     errors: [],
@@ -26,7 +26,7 @@ test('settles null value', async t => {
   });
 });
 
-test('runs and returns result of errFn on failed promises', async t => {
+test('runs and returns result of errFn on failed promises', async (t) => {
   const testPromises: Promise<any>[] = [
     Promise.resolve('a'),
     Promise.reject(new Error('errorA')),
@@ -41,7 +41,7 @@ test('runs and returns result of errFn on failed promises', async t => {
   });
 });
 
-test('allows errFn to take an index', async t => {
+test('allows errFn to take an index', async (t) => {
   const testPromises: Promise<any>[] = [
     Promise.reject(new Error('errorA')),
     Promise.reject(new Error('errorB')),
@@ -55,7 +55,7 @@ test('allows errFn to take an index', async t => {
   });
 });
 
-test('allows errFn to take async functions', async t => {
+test('allows errFn to take async functions', async (t) => {
   const testPromises: Promise<any>[] = [
     Promise.reject(new Error('errorA')),
     Promise.reject(new Error('errorB')),
@@ -69,7 +69,7 @@ test('allows errFn to take async functions', async t => {
   });
 });
 
-test('handles empty promise array', async t => {
+test('handles empty promise array', async (t) => {
   const res = await promiseUtils.settleAll([]);
   t.deepEqual(res, {
     errors: [],

@@ -2,7 +2,7 @@ import test from 'ava';
 
 import * as promiseUtils from '../src/index';
 
-test('throws errors in order with multiple errors', async t => {
+test('throws errors in order with multiple errors', async (t) => {
   const testPromises: Promise<any>[] = [
     promiseUtils.invert(promiseUtils.delay(500, null), 'delayed error'),
     promiseUtils.delay(500, { success: true }),
@@ -16,7 +16,7 @@ test('throws errors in order with multiple errors', async t => {
   t.deepEqual(err.otherErrors, [new Error('failed'), 'also failed']);
 });
 
-test('returns values in order of array not execution speed', async t => {
+test('returns values in order of array not execution speed', async (t) => {
   const testPromises: Promise<any>[] = [
     promiseUtils.delay(500, { success: true }),
     Promise.resolve(3),
@@ -26,7 +26,7 @@ test('returns values in order of array not execution speed', async t => {
   t.deepEqual(res, [{ success: true }, 3, 'success']);
 });
 
-test('throws single error', async t => {
+test('throws single error', async (t) => {
   const testPromises: Promise<any>[] = [
     Promise.reject(new Error('failed')),
     Promise.resolve('success'),
@@ -35,18 +35,18 @@ test('throws single error', async t => {
   t.deepEqual(err, new Error('failed'));
 });
 
-test('settles null value', async t => {
+test('settles null value', async (t) => {
   const res = await promiseUtils.all(null as any);
   t.deepEqual(res, []);
 });
 
-test('works for results', async t => {
+test('works for results', async (t) => {
   const testPromises: Promise<any>[] = [Promise.resolve('a'), Promise.resolve('b')];
   const res = await promiseUtils.all(testPromises);
   t.deepEqual(res, ['a', 'b']);
 });
 
-test('handles empty promise array', async t => {
+test('handles empty promise array', async (t) => {
   const res = await promiseUtils.all([]);
   t.deepEqual(res, []);
 });
