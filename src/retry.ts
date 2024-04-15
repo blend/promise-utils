@@ -28,7 +28,7 @@ export function retry<T extends Function>(fn: T, retryOpts: RetryOpts): T {
   // tslint:disable-next-line:no-any (casting as any to preserve original function type)
   return ((async (...args: any[]): Promise<any> => {
     let lastErr: Error = new Error(
-      `Could not complete function within ${retryOpts.maxAttempts} attempts`
+      `Could not complete function within ${retryOpts.maxAttempts} attempts`,
     );
     for (let i = 0; i < retryOpts.maxAttempts; ++i) {
       try {

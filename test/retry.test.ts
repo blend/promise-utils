@@ -18,9 +18,9 @@ test('fails eventually', async t => {
       () => {
         throw new Error('testing failures');
       },
-      { maxAttempts: 3, delayMs: 100 }
+      { maxAttempts: 3, delayMs: 100 },
     ),
-    /testing failure/
+    /testing failure/,
   );
   t.is(delayStub.callCount, maxAttempts - 1);
 });
@@ -39,7 +39,7 @@ test('honors immediate failure scenarios', async t => {
       maxAttempts: 3,
       isRetryable: err => err.message !== 'Not a retryable error',
     }),
-    /Not a retryable error/
+    /Not a retryable error/,
   );
 });
 
@@ -58,7 +58,7 @@ test.serial('delays appropriately', async t => {
     await promiseUtils.retry(testFn, {
       maxAttempts: 3,
       delayMs: 100,
-    })()
+    })(),
   );
   t.is(delayStub.callCount, 1);
   t.is(delayStub.args[0][0], 100);

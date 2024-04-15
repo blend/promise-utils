@@ -12,7 +12,7 @@ export async function delay<T>(delayTimeMs: number): Promise<void>;
 export async function delay<T>(delayTime: any, value?: T): Promise<void | T> {
   return new Promise(
     // tslint:disable-next-line:no-any (typed by overload signatures)
-    resolve => setTimeout(() => resolve(value), delayTime)
+    resolve => setTimeout(() => resolve(value), delayTime),
   );
 }
 
@@ -29,6 +29,6 @@ export async function immediate<T>(): Promise<void>;
 export async function immediate(value?: any) {
   return new Promise(
     // tslint:disable-next-line:no-any (typed by overload signatures)
-    resolve => setImmediate(() => resolve(value))
+    resolve => setImmediate(() => resolve(value)),
   );
 }

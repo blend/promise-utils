@@ -11,7 +11,7 @@ test('returns all values', async t => {
     _.range(maxRangeNum),
     5,
     async (n, m) => n * n * m,
-    argNum
+    argNum,
   );
   t.deepEqual(_.sortBy(output), _.sortBy(_.map(_.range(maxRangeNum), n => n * n * argNum)));
 });

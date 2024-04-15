@@ -17,27 +17,27 @@ export interface SettledPromises<T, V> {
 export async function settleAll<T, V>(
   promises: readonly Promise<T>[],
   // tslint:disable-next-line:no-any (no way to guarantee error typings)
-  errFn?: (err: any, ind: number) => Promise<V>
+  errFn?: (err: any, ind: number) => Promise<V>,
 ): Promise<SettledPromises<T, V>>;
 export async function settleAll<T, V>(
   promises: readonly Promise<T>[],
   // tslint:disable-next-line:no-any (no way to guarantee error typings)
-  errFn?: (err: any) => Promise<V>
+  errFn?: (err: any) => Promise<V>,
 ): Promise<SettledPromises<T, V>>;
 export async function settleAll<T, V>(
   promises: readonly Promise<T>[],
   // tslint:disable-next-line:no-any (no way to guarantee error typings)
-  errFn?: (err: any, ind: number) => V
+  errFn?: (err: any, ind: number) => V,
 ): Promise<SettledPromises<T, V>>;
 export async function settleAll<T, V>(
   promises: readonly Promise<T>[],
   // tslint:disable-next-line:no-any (no way to guarantee error typings)
-  errFn?: (err: any) => V
+  errFn?: (err: any) => V,
 ): Promise<SettledPromises<T, V>>;
 export async function settleAll<T, V>(
   promises: readonly Promise<T>[],
   // tslint:disable-next-line:no-any (no way to guarantee error typings)
-  errFn: (err: any, ind: number) => V = err => err
+  errFn: (err: any, ind: number) => V = err => err,
 ): Promise<SettledPromises<T, V>> {
   const intermediateResults: { errors?: V; results?: T }[] = await Promise.all(
     (promises || []).map(async (p, i) => {
@@ -46,7 +46,7 @@ export async function settleAll<T, V>(
       } catch (err) {
         return { errors: await errFn(err, i) };
       }
-    })
+    }),
   );
   const settledPromises: SettledPromises<T, V> = { results: [], errors: [] };
   for (const result of intermediateResults) {

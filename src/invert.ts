@@ -13,6 +13,6 @@ export async function invert(promise: Promise<any>, message?: string): Promise<a
     () => {
       throw new Error(message);
     },
-    err => err
+    err => err,
   );
 }
