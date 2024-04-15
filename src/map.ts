@@ -114,6 +114,53 @@ export async function mapLimit<V>(input: any, limit: number, iteratee: any): Pro
 }
 
 /**
+ * The same as map limit but it allows the iteratee function to recieve additional arguments.
+ *
+ * @param {Array | Iterable} input - A collection to iterate over.
+ * @param {number} limit - The maximum number of async operations at a time.
+ * @param {AsyncFunction} iteratee - An async function to apply to each item in coll. The iteratee
+ *     should complete with the transformed item. Invoked with (item, key).
+ * @param {any} args - Various arguments that the iteratee will use to function.
+ */
+export async function mapLimitWithArgs<T, V>(
+  input: readonly T[],
+  limit: number,
+  iteratee: (value: T, ...args: any) => Promise<V>,
+  ...args: any
+): Promise<V[]> {
+  if (!input) {
+    return [];
+  }
+
+  const size = input.length;
+  const allValues = new Array(size);
+  const results = new Array(size);
+
+  let i = 0;
+  for (const key in input) {
+    const possiblyNumericKey = i;
+    allValues[size - 1 - i] = [input[key], i, possiblyNumericKey];
+    ++i;
+  }
+
+  const execute = async () => {
+    while (allValues.length > 0) {
+      // tslint:disable-next-line:no-any
+      const [val, index] = allValues.pop();
+      results[index] = await iteratee(val, ...args);
+    }
+  };
+
+  const allExecutors = [];
+  for (let j = 0; j < limit; ++j) {
+    allExecutors.push(execute());
+  }
+  await Promise.all(allExecutors);
+
+  return results;
+}
+
+/**
  * The same as mapLimit but with only 1 operation at a time, and maintains the ordering guarantees
  * of map.
  *
