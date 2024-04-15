@@ -125,8 +125,10 @@ export async function mapLimit<V>(input: any, limit: number, iteratee: any): Pro
 export async function mapLimitWithArgs<T, V>(
   input: readonly T[],
   limit: number,
+  // tslint:disable-next-line: no-any
   iteratee: (value: T, ...args: any) => Promise<V>,
-  ...args: any
+  // tslint:disable-next-line: no-any
+  ...args: any,
 ): Promise<V[]> {
   if (!input) {
     return [];
