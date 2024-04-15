@@ -103,7 +103,14 @@ module.exports = {
       }
     ],
     quotemark: [true, 'single'],
-    'trailing-comma': [true, {multiline: 'always', singleline: 'never'}],
+    'trailing-comma': [true, {
+      "multiline": {
+        "objects": "always",
+        "arrays": "always",
+        "functions": "never",
+        "typeLiterals": "ignore"
+      }, singleline: 'never'
+    }],
     semicolon: [true, 'always'],
     'variable-name': true,
     whitespace: [

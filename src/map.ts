@@ -19,19 +19,19 @@ const DEFAULT_MAP_PARALLELISM = 10;
  */
 export async function map<T, V>(
   input: readonly T[],
-  iteratee: (value: T, index: number) => Promise<V>,
+  iteratee: (value: T, index: number) => Promise<V>
 ): Promise<V[]>;
 export async function map<T, V>(
   input: readonly T[],
-  iteratee: (value: T) => Promise<V>,
+  iteratee: (value: T) => Promise<V>
 ): Promise<V[]>;
 export async function map<T extends Object, V>(
   input: T,
-  iteratee: (value: T[keyof T], key: string) => Promise<V>,
+  iteratee: (value: T[keyof T], key: string) => Promise<V>
 ): Promise<V[]>;
 export async function map<T extends Object, V>(
   input: T,
-  iteratee: (value: T[keyof T]) => Promise<V>,
+  iteratee: (value: T[keyof T]) => Promise<V>
 ): Promise<V[]>;
 // tslint:disable-next-line:no-any (types are enforced by overload signatures, validated by tests)
 export async function map(input: any, iteratee: any): Promise<any[]> {
@@ -50,22 +50,22 @@ export async function map(input: any, iteratee: any): Promise<any[]> {
 export async function mapLimit<T, V>(
   input: readonly T[],
   limit: number,
-  iteratee: (value: T, index: number) => Promise<V>,
+  iteratee: (value: T, index: number) => Promise<V>
 ): Promise<V[]>;
 export async function mapLimit<T, V>(
   input: readonly T[],
   limit: number,
-  iteratee: (value: T) => Promise<V>,
+  iteratee: (value: T) => Promise<V>
 ): Promise<V[]>;
 export async function mapLimit<T extends Object, V>(
   input: T,
   limit: number,
-  iteratee: (value: T[keyof T], key: string) => Promise<V>,
+  iteratee: (value: T[keyof T], key: string) => Promise<V>
 ): Promise<V[]>;
 export async function mapLimit<T extends Object, V>(
   input: T,
   limit: number,
-  iteratee: (value: T[keyof T]) => Promise<V>,
+  iteratee: (value: T[keyof T]) => Promise<V>
 ): Promise<V[]>;
 // tslint:disable-next-line:no-any (types are enforced by overload signatures, validated by tests)
 export async function mapLimit<V>(input: any, limit: number, iteratee: any): Promise<V[]> {
@@ -172,19 +172,19 @@ export async function mapLimitWithArgs<T, V>(
  */
 export async function mapSeries<T, V>(
   input: readonly T[],
-  iteratee: (value: T, index: number) => Promise<V>,
+  iteratee: (value: T, index: number) => Promise<V>
 ): Promise<V[]>;
 export async function mapSeries<T, V>(
   input: readonly T[],
-  iteratee: (value: T) => Promise<V>,
+  iteratee: (value: T) => Promise<V>
 ): Promise<V[]>;
 export async function mapSeries<T extends Object, V>(
   input: T,
-  iteratee: (value: T[keyof T], key: string) => Promise<V>,
+  iteratee: (value: T[keyof T], key: string) => Promise<V>
 ): Promise<V[]>;
 export async function mapSeries<T extends Object, V>(
   input: T,
-  iteratee: (value: T[keyof T]) => Promise<V>,
+  iteratee: (value: T[keyof T]) => Promise<V>
 ): Promise<V[]>;
 // tslint:disable-next-line:no-any (types are enforced by overload signatures, validated by tests)
 export async function mapSeries(input: any, iteratee: any): Promise<any[]> {
@@ -200,19 +200,19 @@ export async function mapSeries(input: any, iteratee: any): Promise<any[]> {
  */
 export async function flatMap<T, V>(
   input: readonly T[],
-  iteratee: (value: T, index: number) => Promise<V | V[]>,
+  iteratee: (value: T, index: number) => Promise<V | V[]>
 ): Promise<V[]>;
 export async function flatMap<T, V>(
   input: readonly T[],
-  iteratee: (value: T) => Promise<V | V[]>,
+  iteratee: (value: T) => Promise<V | V[]>
 ): Promise<V[]>;
 export async function flatMap<T extends Object, V>(
   input: T,
-  iteratee: (value: T[keyof T], key: string) => Promise<V | V[]>,
+  iteratee: (value: T[keyof T], key: string) => Promise<V | V[]>
 ): Promise<V[]>;
 export async function flatMap<T extends Object, V>(
   input: T,
-  iteratee: (value: T[keyof T]) => Promise<V | V[]>,
+  iteratee: (value: T[keyof T]) => Promise<V | V[]>
 ): Promise<V[]>;
 // tslint:disable-next-line:no-any (types are enforced by overload signatures, validated by tests)
 export async function flatMap(input: any, iteratee: any): Promise<any[]> {

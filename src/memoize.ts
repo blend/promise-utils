@@ -29,7 +29,7 @@ export function memoize<FnType extends (...args: any[]) => Promise<any>>(
   fn: FnType,
   // tslint:disable:no-any hasher can return any value that can be used as a map key
   hasher: (...args: Parameters<FnType>) => any = (...args) => args[0],
-  timeoutMs?: number,
+  timeoutMs?: number
 ): FnType & { reset: (...args: Parameters<FnType>) => void; clear: () => void } {
   const memos: Map<
     ReturnType<typeof hasher>,

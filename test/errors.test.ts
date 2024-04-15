@@ -10,8 +10,8 @@ test('throws wrapped error', async t => {
       },
       () => {
         throw new Error('real error');
-      },
-    )(),
+      }
+    )()
   );
   t.is(err.message, 'real error');
 });
@@ -21,7 +21,7 @@ test('returns a new result', async t => {
     async () => {
       throw new Error('broken');
     },
-    () => 'swallowed!',
+    () => 'swallowed!'
   )();
   t.is(message, 'swallowed!');
 });

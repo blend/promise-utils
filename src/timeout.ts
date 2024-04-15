@@ -16,7 +16,7 @@
 export function timeout<T extends Function>(
   fn: T,
   expirationTime: number,
-  errorMessage?: string,
+  errorMessage?: string
 ): T {
   errorMessage =
     errorMessage || `Could not resolve ${fn.name || '<anonymous>'} within ${expirationTime} ms`;
