@@ -37,7 +37,7 @@ export async function settleAll<T, V>(
 export async function settleAll<T, V>(
   promises: readonly Promise<T>[],
   // tslint:disable-next-line:no-any (no way to guarantee error typings)
-  errFn: (err: any, ind: number) => V = err => err,
+  errFn: (err: any, ind: number) => V = (err) => err,
 ): Promise<SettledPromises<T, V>> {
   const intermediateResults: { errors?: V; results?: T }[] = await Promise.all(
     (promises || []).map(async (p, i) => {

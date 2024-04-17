@@ -2,7 +2,7 @@ import test from 'ava';
 
 import * as promiseUtils from '../src/index';
 
-test('throws wrapped error', async t => {
+test('throws wrapped error', async (t) => {
   const err = await promiseUtils.invert(
     promiseUtils.transformErrors(
       async () => {
@@ -16,12 +16,13 @@ test('throws wrapped error', async t => {
   t.is(err.message, 'real error');
 });
 
-test('returns a new result', async t => {
-  const message = await promiseUtils.transformErrors(
+test('returns a new result', async (t) => {
+  const message = await (promiseUtils.transformErrors(
     async () => {
       throw new Error('broken');
     },
     () => 'swallowed!',
-  )();
+  ) as () => Promise<string>)();
+
   t.is(message, 'swallowed!');
 });

@@ -7,14 +7,14 @@ import * as promiseUtils from '../src/index';
 
 const sandbox = sinon.createSandbox();
 
-test('fails eventually', async t => {
+test('fails eventually', async (t) => {
   await t.throwsAsync(
-    promiseUtils.until(async () => 0, { maxAttempts: 3 }),
-    /Could not complete function within/,
+    promiseUtils.until(async () => Promise.resolve(0), { maxAttempts: 3 }),
+    { instanceOf: Error, message: /Could not complete function within/ },
   );
 });
 
-test.serial('delays appropriately', async t => {
+test.serial('delays appropriately', async (t) => {
   let count = 0;
   const testFn = async () => {
     if (count++ === 0) {
@@ -35,7 +35,7 @@ test.serial('delays appropriately', async t => {
   t.is(delayStub.args[0][0], 100);
 });
 
-test('succeeds on retry', async t => {
+test('succeeds on retry', async (t) => {
   let count = 0;
   const testFn = async () => {
     if (count++ === 0) {
@@ -47,7 +47,7 @@ test('succeeds on retry', async t => {
   t.true(await promiseUtils.until(testFn, { maxAttempts: 3 })());
 });
 
-test('currys multiple args properly', async t => {
+test('currys multiple args properly', async (t) => {
   const expectedFirstArg: string = 'first';
   const expectedSecondArg: string = 'second';
 
