@@ -9,7 +9,7 @@ const sandbox = sinon.createSandbox();
 
 test('fails eventually', async (t) => {
   await t.throwsAsync(
-    promiseUtils.until(() => Promise.resolve(0), { maxAttempts: 3 }),
+    promiseUtils.until(async () => Promise.resolve(0), { maxAttempts: 3 }),
     { instanceOf: Error, message: /Could not complete function within/ },
   );
 });

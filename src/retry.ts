@@ -34,10 +34,7 @@ export function retry<T extends Function>(fn: T, retryOpts: RetryOpts): T {
       try {
         return await fn(...args);
       } catch (err) {
-        if (err instanceof Error) {
-          if (retryOpts.isRetryable && !retryOpts.isRetryable(err)) {
-            throw err;
-          }
+        if (err instanceof Error && (!retryOpts.isRetryable || retryOpts.isRetryable(err))) {
           lastErr = err;
         } else {
           throw err;
