@@ -37,5 +37,13 @@ export async function filter(input: any, predicate: any): Promise<any[]> {
   await map(input, async (value: any, key: any) => {
     predicateResults[key] = await predicate(value, key);
   });
-  return input.filter((_value: any, key: any) => predicateResults[key]);
+
+  // tslint:disable-next-line:no-any
+  const output: any[] = [];
+  for (const k in input) {
+    if (predicateResults[k]) {
+      output.push(input[k])
+    }
+  }
+  return output;
 }
