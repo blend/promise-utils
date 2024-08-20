@@ -4,7 +4,7 @@ import test from 'ava';
 
 import * as promiseUtils from '../src/index';
 
-function delay(ms: number) {
+async function delay(ms: number): Promise<void> {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
