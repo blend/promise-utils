@@ -42,7 +42,7 @@ export async function filter(input: any, predicate: any): Promise<any[]> {
   const output: any[] = [];
   for (const k in input) {
     if (predicateResults[k]) {
-      output.push(input[k])
+      output.push(input[k]);
     }
   }
   return output;
