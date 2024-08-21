@@ -32,12 +32,18 @@ export async function filter(input: any, predicate: any): Promise<any[]> {
   }
 
   // tslint:disable-next-line:no-any
-  const output: any[] = [];
+  const predicateResults: any = Array.isArray(input) ? new Array(input.length) : {};
   // tslint:disable-next-line:no-any
   await map(input, async (value: any, key: any) => {
-    if (await predicate(value, key)) {
-      output.push(value);
-    }
+    predicateResults[key] = await predicate(value, key);
   });
+
+  // tslint:disable-next-line:no-any
+  const output: any[] = [];
+  for (const k in input) {
+    if (predicateResults[k]) {
+      output.push(input[k]);
+    }
+  }
   return output;
 }
