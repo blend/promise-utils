@@ -4,10 +4,6 @@ import test from 'ava';
 
 import * as promiseUtils from '../src/index';
 
-async function delay(ms: number): Promise<void> {
-  return new Promise(resolve => setTimeout(resolve, ms));
-}
-
 test('returns empty array when given no input', async t => {
   const output = await promiseUtils.filter(null as any, _.identity);
   t.deepEqual(output, []);
@@ -15,20 +11,36 @@ test('returns empty array when given no input', async t => {
 
 test('filters arrays and maintains order', async t => {
   const input = [1, 2, 3, 4, 5, 6, 7, 8];
-  const output = await promiseUtils.filter(input, async (value: any) => {
-    await delay(_.random(5000)); // Add a variable delay to ensure we don't maintain order by luck
+
+  let nextIndexToRelease = input.length - 1;
+  const getNextIndexToRelease = () => nextIndexToRelease;
+
+  const output = await promiseUtils.filter(input, async (value: any, index: number) => {
+    // Returns in reverse order
+    while (getNextIndexToRelease() !== index) {
+      await promiseUtils.immediate();
+    }
+    nextIndexToRelease--;
     return value > 3;
   });
   t.deepEqual(output, [4, 5, 6, 7, 8]);
 });
 
 test('filters arrays with indices and maintains order', async t => {
-  const input = [1, 2, 3, 4, 5, 6, 7, 8];
-  const output = await promiseUtils.filter(input, async (value: any, i: number) => {
-    await delay(_.random(5000)); // Add a variable delay to ensure we don't maintain order by luck
-    return i % 2 === 0;
+  const input = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
+
+  let nextIndexToRelease = input.length - 1;
+  const getNextIndexToRelease = () => nextIndexToRelease;
+
+  const output = await promiseUtils.filter(input, async (value: any, index: number) => {
+    // Returns in reverse order
+    while (getNextIndexToRelease() !== index) {
+      await promiseUtils.immediate();
+    }
+    nextIndexToRelease--;
+    return index % 2 === 0;
   });
-  t.deepEqual(output, [1, 3, 5, 7]);
+  t.deepEqual(output, ['a', 'c', 'e', 'g']);
 });
 
 test('filters objects with numeric keys', async t => {
